@@ -25,6 +25,6 @@ WORKDIR /app
 # Copia lo instalado desde la etapa builder
 COPY --from=builder /install /usr/local
 # Copia el código fuente
-COPY backend/app ./app
+COPY backend/ ./
 
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
