@@ -32,6 +32,7 @@ services:
       - db
       - redis
     volumes:
+      - ../backend:/app   
       - ..:/code                    # hot-reload en dev (opcional)
       - invoices:/storage/invoices  # PDFs persistentes
 

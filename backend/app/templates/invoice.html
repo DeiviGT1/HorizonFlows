@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    body { font-family: sans-serif; margin: 0 2rem; color: #003F88; }
+    h1 { text-align: right; }
+    table { width: 100%; border-collapse: collapse; margin-top: 1rem;}
+    th, td { border: 1px solid #005DA8; padding: 6px; }
+    th { background: #F5F7FA; }
+    .total { text-align: right; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h1>Invoice #{{ invoice.id }}</h1>
+
+  <p><b>Company:</b> {{ company.name }}</p>
+  <p><b>Customer:</b> {{ customer.name }}</p>
+  <p><b>Date:</b> {{ invoice.date.strftime('%Y-%m-%d') }}</p>
+
+  <table>
+    <thead>
+      <tr><th>Qty</th><th>Description</th><th>Unit</th><th>Total</th></tr>
+    </thead>
+    <tbody>
+    {% for l in lines %}
+      <tr>
+        <td>{{ l.qty }}</td>
+        <td>{{ l.product.name }}</td>
+        <td>${{ '%0.2f'|format(l.unit_price) }}</td>
+        <td>${{ '%0.2f'|format(l.line_total) }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+  <p class="total">Subtotal: ${{ '%0.2f'|format(invoice.subtotal) }}</p>
+  <p class="total">Tax: ${{ '%0.2f'|format(invoice.tax) }}</p>
+  <p class="total">Grand Total: ${{ '%0.2f'|format(invoice.total) }}</p>
+</body>
+</html>
