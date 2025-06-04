@@ -2,7 +2,8 @@
 import React, { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "../api/axios";
-import TableBase from "../components/TableBase";
+// Si decides sacar el CSS a un archivo aparte, basta con:
+// import "./Invoices.css";
 
 export default function Invoices() {
   const qc = useQueryClient();
@@ -14,85 +15,50 @@ export default function Invoices() {
   });
 
   // 1️⃣ Traer lista de facturas
-  const { data: invoices, isLoading, error } = useQuery({ // Un solo objeto como argumento
+  const { data: invoices, isLoading, error } = useQuery({
     queryKey: ["invoices"],
     queryFn: async () => {
       const res = await api.get("/invoices/");
       return res.data;
-    }
-    // Aquí puedes añadir otras opciones de query si las necesitas
+    },
   });
 
   // 2️⃣ Mutación: crear factura
-  const createMutation = useMutation({ // Un solo objeto como argumento
-    mutationFn: async (newInv) => { // La función ahora es una propiedad 'mutationFn'
+  const createMutation = useMutation({
+    mutationFn: async (newInv) => {
       await api.post("/invoices/", newInv);
     },
-    onSuccess: () => { // Las opciones van en el mismo objeto
+    onSuccess: () => {
       qc.invalidateQueries(["invoices"]);
       setShowForm(false);
     },
-    // Aquí puedes añadir otras opciones de mutación si las necesitas
   });
 
-  if (isLoading) return <p>Cargando facturas…</p>;
-  if (error) return <p>Error al cargar facturas.</p>;
+  if (isLoading) return <p className="text-white">Cargando facturas…</p>;
+  if (error) return <p className="text-red-500">Error al cargar facturas.</p>;
 
-  const columns = [
-    { key: "id", header: "ID" },
-    { key: "date", header: "Fecha" },
-    { key: "company_id", header: "Empresa ID" },
-    { key: "customer_id", header: "Cliente ID" },
-    { key: "subtotal", header: "Subtotal" },
-    { key: "tax", header: "Impuesto" },
-    { key: "total", header: "Total" },
-    { key: "status", header: "Estado" },
-    {
-      key: "has_pdf",
-      header: "PDF",
-      render: (row) =>
-        row.has_pdf ? (
-          <button
-            onClick={() =>
-              window.open(`http://localhost:8000/invoices/${row.id}/pdf`)
-            }
-            className="text-blue-600 hover:underline"
-          >
-            Descargar
-          </button>
-        ) : (
-          <span className="text-gray-500">Sin PDF</span>
-        ),
-    },
-  ];
-
-  // Funciones para manejar el formulario:
+  // Funciones para manejar formulario (igual que antes)...
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
-
   const handleLineChange = (idx, field, value) => {
     const newLines = [...formData.lines];
     newLines[idx][field] = value;
     setFormData((prev) => ({ ...prev, lines: newLines }));
   };
-
   const addLine = () => {
     setFormData((prev) => ({
       ...prev,
       lines: [...prev.lines, { product_id: "", qty: "" }],
     }));
   };
-
   const removeLine = (idx) => {
     const newLines = formData.lines.filter((_, i) => i !== idx);
     setFormData((prev) => ({ ...prev, lines: newLines }));
   };
-
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Convierte strings a números
     const payload = {
       company_id: Number(formData.company_id),
       customer_id: Number(formData.customer_id),
@@ -105,20 +71,155 @@ export default function Invoices() {
   };
 
   return (
-    <div>
-      <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl font-semibold">Facturas</h1>
-        <button
-          onClick={() => setShowForm(true)}
-          className="bg-primary text-white px-4 py-2 rounded hover:bg-blue-700"
-        >
-          + Nueva Factura
-        </button>
+    <div className="px-40 flex flex-1 justify-center py-5 bg-[#0f1524] min-h-screen">
+      <div className="layout-content-container flex flex-col max-w-[960px] w-full">
+        {/* ───────── Header (Título + Botón) ───────── */}
+        <div className="flex flex-wrap justify-between items-center gap-3 p-4">
+          <p className="text-white tracking-light text-[32px] font-bold leading-tight min-w-72">
+            Invoices
+          </p>
+          <button
+            onClick={() => setShowForm(true)}
+            className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center rounded h-8 px-4 bg-[#20344b] text-white text-sm font-medium leading-normal hover:bg-[#2a4262]"
+          >
+            <span className="truncate">New invoice</span>
+          </button>
+        </div>
+
+        {/* ───────── Filtros (Date, Customer, Amount) ───────── */}
+        <div className="flex gap-3 p-3 flex-wrap pr-4">
+          {["Date", "Customer", "Amount"].map((label) => (
+            <button
+              key={label}
+              className="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded bg-[#20344b] px-2 hover:bg-[#2a4262]"
+            >
+              <p className="text-white text-sm font-medium leading-normal">
+                {label}
+              </p>
+              {/* Ícono caret (svg inline) */}
+              <div className="text-white">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20px"
+                  height="20px"
+                  fill="currentColor"
+                  viewBox="0 0 256 256"
+                >
+                  <path d="M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z" />
+                </svg>
+              </div>
+            </button>
+          ))}
+        </div>
+
+        {/* ───────── Tabla ───────── */}
+        <div className="px-4 py-3" style={{ containerType: "inline-size" }}>
+          <div className="flex overflow-hidden rounded border border-[#2e4a6b] bg-[#0f1924]">
+            <table className="flex-1 border-collapse">
+              {/* ─── Head ─── */}
+              <thead>
+                <tr className="bg-[#172536]">
+                  <th className="column-120 px-4 py-3 text-left text-white w-[400px] text-sm font-medium leading-normal">
+                    Date
+                  </th>
+                  <th className="column-240 px-4 py-3 text-left text-white w-[400px] text-sm font-medium leading-normal">
+                    Customer
+                  </th>
+                  <th className="column-360 px-4 py-3 text-left text-white w-60 text-sm font-medium leading-normal">
+                    Status
+                  </th>
+                  <th className="column-480 px-4 py-3 text-left text-white w-[400px] text-sm font-medium leading-normal">
+                    Amount
+                  </th>
+                  <th className="column-600 px-4 py-3 text-left text-white w-[400px] text-sm font-medium leading-normal">
+                    Due date
+                  </th>
+                  <th className="column-720 px-4 py-3 text-left text-[#8dabce] w-60 text-sm font-medium leading-normal">
+                    Action
+                  </th>
+                </tr>
+              </thead>
+              {/* ─── Body ─── */}
+              <tbody>
+                {invoices.map((inv) => (
+                  <tr key={inv.id} className="border-t border-t-[#2e4a6b]">
+                    {/* Date */}
+                    <td className="column-120 h-[72px] px-4 py-2 w-[400px] text-[#8dabce] text-sm font-normal leading-normal">
+                      {/* Asumiendo que 'inv.date' viene en ISO, formateamos a MM/DD/YYYY */}
+                      {new Date(inv.date).toLocaleDateString("en-US")}
+                    </td>
+                    {/* Customer (aquí podrías mapear inv.customer_id → nombre real, si lo tuvieras) */}
+                    <td className="column-240 h-[72px] px-4 py-2 w-[400px] text-white text-sm font-normal leading-normal">
+                      Customer #{inv.customer_id}
+                    </td>
+                    {/* Status (botón con texto) */}
+                    <td className="column-360 h-[72px] px-4 py-2 w-60 text-sm font-normal leading-normal">
+                      <button
+                        className={`
+                          flex w-full h-8 items-center justify-center rounded px-4 
+                          text-sm font-medium leading-normal
+                          ${
+                            inv.status === "paid"
+                              ? "bg-green-600 text-white hover:bg-green-700"
+                              : inv.status === "overdue"
+                              ? "bg-red-600 text-white hover:bg-red-700"
+                              : "bg-[#20344b] text-white hover:bg-[#2a4262]"
+                          }
+                        `}
+                      >
+                        <span className="truncate">
+                          {inv.status.charAt(0).toUpperCase() +
+                            inv.status.slice(1)}
+                        </span>
+                      </button>
+                    </td>
+                    {/* Amount */}
+                    <td className="column-480 h-[72px] px-4 py-2 w-[400px] text-[#8dabce] text-sm font-normal leading-normal">
+                      ${inv.total.toFixed(2)}
+                    </td>
+                    {/* Due date (aquí asumo que inv.due_date existe; si no, puedes usar otro campo) */}
+                    <td className="column-600 h-[72px] px-4 py-2 w-[400px] text-[#8dabce] text-sm font-normal leading-normal">
+                      {inv.due_date
+                        ? new Date(inv.due_date).toLocaleDateString("en-US")
+                        : "-"}
+                    </td>
+                    {/* Action (“View” simple) */}
+                    <td className="column-720 h-[72px] px-4 py-2 w-60 text-[#8dabce] text-sm font-bold leading-normal tracking-[0.015em] cursor-pointer hover:text-white">
+                      View
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* ───────── Container Queries ───────── */}
+          <style>
+            {`
+              @container (max-width: 120px) {
+                .column-120 { display: none; }
+              }
+              @container (max-width: 240px) {
+                .column-240 { display: none; }
+              }
+              @container (max-width: 360px) {
+                .column-360 { display: none; }
+              }
+              @container (max-width: 480px) {
+                .column-480 { display: none; }
+              }
+              @container (max-width: 600px) {
+                .column-600 { display: none; }
+              }
+              @container (max-width: 720px) {
+                .column-720 { display: none; }
+              }
+            `}
+          </style>
+        </div>
       </div>
 
-      <TableBase data={invoices || []} columns={columns} />
-
-      {/* Modal / Formulario para crear factura */}
+      {/* ───────── Modal / Formulario para crear factura ───────── */}
       {showForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
           <div className="bg-white p-6 rounded shadow-lg w-96 max-h-[90vh] overflow-auto">
