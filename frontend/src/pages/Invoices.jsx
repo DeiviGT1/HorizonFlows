@@ -53,6 +53,7 @@ export default function Invoices() {
       lines: [...prev.lines, { product_id: "", qty: "" }],
     }));
   };
+  
   const removeLine = (idx) => {
     const newLines = formData.lines.filter((_, i) => i !== idx);
     setFormData((prev) => ({ ...prev, lines: newLines }));

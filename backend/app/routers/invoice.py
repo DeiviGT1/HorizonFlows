@@ -8,8 +8,9 @@ from app.models import Invoice
 from app.schemas.invoice import InvoiceIn, InvoiceOut
 from app.services.invoice_service import InvoiceService
 from pathlib import Path
+from app.core.auth import verify_jwt
 
-router = APIRouter(prefix="/invoices", tags=["invoices"])
+router = APIRouter(prefix="/invoices", tags=["invoices"], dependencies=[Depends(verify_jwt)])
 
 @router.post("/", response_model=Invoice)
 def create_invoice(data: InvoiceIn, session: Session = Depends(get_session)):
@@ -32,17 +33,3 @@ def list_invoices(session: Session = Depends(get_session)):
     """
     invoices = session.exec(select(Invoice)).all()
     return invoices
-
-##PRUEBA
-
-@router.get("/{inv_id}", response_model=InvoiceOut)
-def get_invoice(inv_id: int, session: Session = Depends(get_session)):
-    inv = session.get(Invoice, inv_id)
-    if not inv:
-        raise HTTPException(404, "Invoice not found")
-
-    # construye un objeto de salida
-    return InvoiceOut.from_orm(
-        inv,
-        update={"has_pdf": Path(f"/storage/invoices/{inv_id}.pdf").exists()}
-    )

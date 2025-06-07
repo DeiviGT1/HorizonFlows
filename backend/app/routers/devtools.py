@@ -4,8 +4,9 @@ from sqlalchemy import delete
 
 from app.core.db import get_session
 from app.models import InvoiceLine, Invoice, Product, Customer, Company
+from app.core.auth import verify_jwt
 
-router = APIRouter(prefix="/dev", tags=["devtools"])
+router = APIRouter(prefix="/dev", tags=["devtools"], dependencies=[Depends(verify_jwt)])
 
 @router.delete("/purge-invoices", summary="PURGA total de facturas")
 def purge_invoices(session: Session = Depends(get_session)):

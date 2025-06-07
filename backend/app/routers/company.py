@@ -2,8 +2,9 @@ from fastapi import APIRouter, Depends
 from sqlmodel import Session, select
 from app.core.db import get_session
 from app.models import Company
+from app.core.auth import verify_jwt
 
-router = APIRouter(prefix="/companies", tags=["companies"])
+router = APIRouter(prefix="/companies", tags=["companies"], dependencies=[Depends(verify_jwt)])
 
 @router.post("/", response_model=Company)
 def create_company(company: Company, session: Session = Depends(get_session)):
