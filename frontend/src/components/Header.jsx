@@ -1,44 +1,44 @@
 // src/components/Header.jsx
 import React from "react";
 import { Link } from "react-router-dom";
+import { useAuth0 } from "@auth0/auth0-react";
+import AuthButton from "./AuthButton";
 import "./Header.css";
 
 export default function Header() {
+  const { isAuthenticated, isLoading, user } = useAuth0();
+
+  // Opcional: mientras Auth0 hidrata la sesión evita el parpadeo
+  if (isLoading) return null;
+
   return (
-    <header className="header">
-      {/* Left side: logo + nombre + nav */}
-      <div className="flex items-center">
-        {/* Logo + texto */}
-        <div className="header__branding">
-          <svg
-            viewBox="0 0 48 48"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              fillRule="evenodd"
-              clipRule="evenodd"
-              d="M24 4H42V17.3333V30.6667H24V44H6V30.6667V17.3333H24V4Z"
-              fill="currentColor"
-            />
-          </svg>
+    <header className="header flex items-center justify-between">
+      {/* Branding + navegación */}
+      <div className="flex items-center gap-8">
+        <div className="header__branding flex items-center gap-2">
+          <svg /* …logo… */ />
           <h1>BizMetrics</h1>
         </div>
 
-        {/* Navegación principal */}
-        <nav className="header__nav">
-          <Link to="/dashboard">Dashboard</Link>
-          <Link to="/products">Products</Link>
-          <Link to="/customers">Customers</Link>
-          <Link to="/companies">Companies</Link>
-          <Link to="/invoices">Invoices</Link>
-        </nav>
+        {/* Menú solo para usuarios autenticados */}
+        {isAuthenticated && (
+          <nav className="header__nav flex gap-4">
+            <Link to="/dashboard">Dashboard</Link>
+            <Link to="/products">Products</Link>
+            <Link to="/customers">Customers</Link>
+            <Link to="/companies">Companies</Link>
+            <Link to="/invoices">Invoices</Link>
+          </nav>
+        )}
       </div>
 
-      {/* Right side: buscador + notificación + avatar */}
-      <div className="header__actions">
+      {/* Acciones */}
+      <div className="header__actions flex items-center gap-4">
+        <AuthButton />
 
-        {/* Botón de notificación (campana) */}
+        {isAuthenticated && (
+          <>
+                    {/* Botón de notificación (campana) */}
         <button className="header__icon-button">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -49,15 +49,16 @@ export default function Header() {
           </svg>
         </button>
 
-        {/* Avatar circular */}
-        <div
-          className="header__avatar"
-          style={{
-            /* Reemplaza esta URL por la de tu usuario real */
-            backgroundImage:
-              'url("https://lh3.googleusercontent.com/aida-public/AB6AXuA1VH19HSB_pBdBeUj4XvQILK-KjCccNDKX4j-wSzIgywggdtrWsBPfizX7FqS91HDSaR3lR_gDLC2B1W7UvhO_6YOft6s1ROZ6BscVOuWo_7u02IGM2tMJjjgMIyW1eSJBJNAAsJYfAMKFM2-NDmltkg8JAOnIiwgFUXyCV2r7G4BHSZDrPYsm_6PeHikh42iilV2X8h5No5fMyXHGVQAXLmBufJ1HWXAGcOrN3ry5T5dKdQE12doaM6SpHoELtqv9ZzIBozKDqXpf")',
-          }}
-        />
+
+            {/* Avatar del usuario */}
+            <div
+              className="header__avatar"
+              style={{
+                backgroundImage: `url("${user?.picture ?? ""}")`,
+              }}
+            />
+          </>
+        )}
       </div>
     </header>
   );

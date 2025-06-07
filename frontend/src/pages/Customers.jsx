@@ -1,10 +1,11 @@
 // src/pages/Customers.jsx
 import React from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { api } from "../api/axios";
+import { useApi } from '../hooks/useApi';
 
 export default function Customers() {
   const qc = useQueryClient();
+  const api = useApi();
 
   // 1️⃣ Traer lista de clientes
   const { data: customers, isLoading, error } = useQuery({

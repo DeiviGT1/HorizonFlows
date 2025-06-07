@@ -1,11 +1,11 @@
 // src/pages/Products.jsx
 import React from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { api } from "../api/axios";
+import { useApi } from '../hooks/useApi';
 
 export default function Products() {
   const qc = useQueryClient();
-
+  const api = useApi();
   // 1️⃣ Traer lista de productos
   const {
     data: products,

@@ -1,12 +1,20 @@
 // src/api/axios.js
-import axios from "axios";
-
-// Si no está definida, usamos localhost:8000
-const baseURL = process.env.REACT_APP_API_URL || "http://localhost:8000";
+import axios from 'axios';
+import { getAccessTokenSilently } from '@auth0/auth0-react';
 
 export const api = axios.create({
-  baseURL,
-  headers: {
-    "Content-Type": "application/json",
-  },
+  baseURL: process.env.REACT_APP_API_URL,
 });
+
+api.interceptors.request.use(
+  async (config) => {
+    try {
+      const token = await getAccessTokenSilently();
+      config.headers.Authorization = `Bearer ${token}`;
+    } catch (e) {
+      console.warn('No se pudo obtener el token', e);
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);

@@ -1,12 +1,11 @@
 // src/pages/Invoices.jsx
 import React, { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { api } from "../api/axios";
-// Si decides sacar el CSS a un archivo aparte, basta con:
-// import "./Invoices.css";
+import { useApi } from '../hooks/useApi';
 
 export default function Invoices() {
   const qc = useQueryClient();
+  const api = useApi();
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({
     company_id: "",
@@ -15,7 +14,7 @@ export default function Invoices() {
   });
 
   // 1️⃣ Traer lista de facturas
-  const { data: invoices, isLoading, error } = useQuery({
+  const { data: invoices = [], isLoading, error } = useQuery({
     queryKey: ["invoices"],
     queryFn: async () => {
       const res = await api.get("/invoices/");
@@ -34,10 +33,19 @@ export default function Invoices() {
     },
   });
 
-  if (isLoading) return <p className="text-white">Cargando facturas…</p>;
-  if (error) return <p className="text-red-500">Error al cargar facturas.</p>;
+    if (isLoading)
+    return (
+      <div className="px-40 flex flex-1 justify-center py-5 bg-[#0f1524] min-h-screen">
+        <p className="text-white">Cargando facturas…</p>
+      </div>
+    );
+  if (error)
+    return (
+      <div className="px-40 flex flex-1 justify-center py-5 bg-[#0f1524] min-h-screen">
+        <p className="text-red-500">Error al cargar facturas.</p>
+      </div>
+    );
 
-  // Funciones para manejar formulario (igual que antes)...
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -72,9 +80,9 @@ export default function Invoices() {
   };
 
   return (
-    <div className="px-40 flex flex-1 justify-center py-5 bg-[#0f1524] min-h-screen">
+   <div className="px-40 flex flex-1 justify-center py-5 bg-[#0f1524] min-h-screen">
       <div className="layout-content-container flex flex-col max-w-[960px] w-full">
-        {/* ───────── Header (Título + Botón) ───────── */}
+
         <div className="flex flex-wrap justify-between items-center gap-3 p-4">
           <p className="text-white tracking-light text-[32px] font-bold leading-tight min-w-72">
             Invoices
@@ -87,7 +95,7 @@ export default function Invoices() {
           </button>
         </div>
 
-        {/* ───────── Filtros (Date, Customer, Amount) ───────── */}
+
         <div className="flex gap-3 p-3 flex-wrap pr-4">
           {["Date", "Customer", "Amount"].map((label) => (
             <button
@@ -97,7 +105,7 @@ export default function Invoices() {
               <p className="text-white text-sm font-medium leading-normal">
                 {label}
               </p>
-              {/* Ícono caret (svg inline) */}
+
               <div className="text-white">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -113,11 +121,11 @@ export default function Invoices() {
           ))}
         </div>
 
-        {/* ───────── Tabla ───────── */}
+
         <div className="px-4 py-3" style={{ containerType: "inline-size" }}>
           <div className="flex overflow-hidden rounded border border-[#2e4a6b] bg-[#0f1924]">
             <table className="flex-1 border-collapse">
-              {/* ─── Head ─── */}
+
               <thead>
                 <tr className="bg-[#172536]">
                   <th className="column-120 px-4 py-3 text-left text-white w-[400px] text-sm font-medium leading-normal">
@@ -140,20 +148,20 @@ export default function Invoices() {
                   </th>
                 </tr>
               </thead>
-              {/* ─── Body ─── */}
+
               <tbody>
-                {invoices.map((inv) => (
+                {(Array.isArray(invoices) ? invoices : []).map((inv) => (
                   <tr key={inv.id} className="border-t border-t-[#2e4a6b]">
-                    {/* Date */}
+
                     <td className="column-120 h-[72px] px-4 py-2 w-[400px] text-[#8dabce] text-sm font-normal leading-normal">
-                      {/* Asumiendo que 'inv.date' viene en ISO, formateamos a MM/DD/YYYY */}
+
                       {new Date(inv.date).toLocaleDateString("en-US")}
                     </td>
-                    {/* Customer (aquí podrías mapear inv.customer_id → nombre real, si lo tuvieras) */}
+
                     <td className="column-240 h-[72px] px-4 py-2 w-[400px] text-white text-sm font-normal leading-normal">
                       Customer #{inv.customer_id}
                     </td>
-                    {/* Status (botón con texto) */}
+
                     <td className="column-360 h-[72px] px-4 py-2 w-60 text-sm font-normal leading-normal">
                       <button
                         className={`
@@ -174,17 +182,17 @@ export default function Invoices() {
                         </span>
                       </button>
                     </td>
-                    {/* Amount */}
+
                     <td className="column-480 h-[72px] px-4 py-2 w-[400px] text-[#8dabce] text-sm font-normal leading-normal">
                       ${inv.total.toFixed(2)}
                     </td>
-                    {/* Due date (aquí asumo que inv.due_date existe; si no, puedes usar otro campo) */}
+
                     <td className="column-600 h-[72px] px-4 py-2 w-[400px] text-[#8dabce] text-sm font-normal leading-normal">
                       {inv.due_date
                         ? new Date(inv.due_date).toLocaleDateString("en-US")
                         : "-"}
                     </td>
-                    {/* Action (“View” simple) */}
+
                     <td className="column-720 h-[72px] px-4 py-2 w-60 text-[#8dabce] text-sm font-bold leading-normal tracking-[0.015em] cursor-pointer hover:text-white">
                       View
                     </td>
@@ -194,7 +202,7 @@ export default function Invoices() {
             </table>
           </div>
 
-          {/* ───────── Container Queries ───────── */}
+
           <style>
             {`
               @container (max-width: 120px) {
@@ -220,7 +228,7 @@ export default function Invoices() {
         </div>
       </div>
 
-      {/* ───────── Modal / Formulario para crear factura ───────── */}
+
       {showForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
           <div className="bg-white p-6 rounded shadow-lg w-96 max-h-[90vh] overflow-auto">

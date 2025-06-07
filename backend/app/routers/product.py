@@ -6,7 +6,7 @@ from app.core.db import get_session
 from app.models import Product
 from app.core.auth import verify_jwt
 
-router = APIRouter(prefix="/products", tags=["products"], dependencies=[Depends(verify_jwt)])
+router = APIRouter(prefix="/products", tags=["products"])
 
 @router.post("/", response_model=Product)
 def create_product(p: Product, session: Session = Depends(get_session)):
