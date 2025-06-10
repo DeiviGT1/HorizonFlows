@@ -1,11 +1,27 @@
-from .company import Company
-from .user import User
-from .customer import Customer
-from .product import Product
+# app/models/__init__.py
+
+from .business import Business
+from .chart_of_account import ChartOfAccount
+from .journal import JournalEntry, JournalLine
 from .invoice import Invoice, InvoiceLine
+from .expense import Expense, ExpenseLine
+from .payment import Payment
+from .customer import Customer
+from .vendor import Vendor
+from .category import Category
+
 
 __all__ = [
-    "Company", "User",
-    "Customer", "Product",
-    "Invoice", "InvoiceLine",
+    "Business",
+    "ChartOfAccount",
+    "JournalEntry",
+    "JournalLine",
+    "Invoice",
+    "InvoiceLine",
+    "Expense",
+    "ExpenseLine",
+    "Payment",
+    "Customer",
+    "Vendor",
+    "Category",
 ]

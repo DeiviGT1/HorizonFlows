@@ -1,23 +1,38 @@
+# backend/app/models/invoice.py
 from datetime import datetime
-from typing import Optional, List
-from sqlmodel import Field, SQLModel, Relationship
-
-
-class InvoiceLine(SQLModel, table=True):
-    id: Optional[int] = Field(default=None, primary_key=True)
-    invoice_id: int = Field(foreign_key="invoice.id")
-    product_id: int = Field(foreign_key="product.id")
-    qty: int
-    unit_price: float
-    line_total: float
+from typing import List, Optional
+from sqlmodel import SQLModel, Field, Relationship
 
 class Invoice(SQLModel, table=True):
+    """
+    Venta a cliente. Genera asiento automático.
+    """
     id: Optional[int] = Field(default=None, primary_key=True)
-    company_id: int = Field(foreign_key="company.id")
-    customer_id: int = Field(foreign_key="customer.id")
-    date: datetime = Field(default_factory=datetime.utcnow)
-    subtotal: float
-    tax: float
-    total: float
-    status: str = "draft"            # draft | sent | paid
-    lines: List[InvoiceLine] = Relationship(back_populates=None)
+    business_id: int  = Field(foreign_key="business.id")
+    customer_id: int  = Field(foreign_key="customer.id")
+    entry_id: Optional[int] = Field(default=None, foreign_key="journal_entry.id")
+    date: datetime
+    due_date: Optional[datetime] = None
+    status: str
+    total_amount: float = 0.0
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+
+    business: "Business" = Relationship()
+    customer: "Customer" = Relationship()
+    entry:    Optional["JournalEntry"] = Relationship()
+    lines:    List["InvoiceLine"]    = Relationship(back_populates="invoice")
+
+class InvoiceLine(SQLModel, table=True):
+    """
+    Línea de factura: vincula cuenta de ingreso y cuentas por cobrar.
+    """
+    id: Optional[int] = Field(default=None, primary_key=True)
+    invoice_id: int   = Field(foreign_key="invoice.id")
+    account_id: int = Field(foreign_key="chart_of_account.id")
+    category_id: Optional[int] = Field(default=None, foreign_key="category.id")
+    description: Optional[str] = None
+    amount: float = 0.0
+
+    invoice: "Invoice" = Relationship()
+    account: "ChartOfAccount" = Relationship(back_populates="invoice_lines")
+    category: Optional["Category"] = Relationship(back_populates="invoice_lines")

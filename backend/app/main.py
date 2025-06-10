@@ -1,7 +1,8 @@
 # backend/app/main.py
 
 from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware # <--- 1. IMPORTA ESTO
+from starlette.middleware.cors import CORSMiddleware
+from app.core.tenant_middleware import TenantMiddleware
 from app.routers import company, customer, product, invoice, devtools
 
 app = FastAPI(title="HorizonFlows API")
@@ -12,12 +13,13 @@ origins = [
     "http://127.0.0.1:3000", # IP local para el frontend
 ]
 
+app.add_middleware(TenantMiddleware)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
     allow_credentials=True,
-    allow_methods=["*"], # Permite GET, POST, PUT, DELETE, etc.
-    allow_headers=["*"], # Permite todas las cabeceras
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 # --- FIN DE LA CONFIGURACIÓN DE CORS ---
 

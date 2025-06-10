@@ -1,12 +1,12 @@
-# backend/app/models/customer.py
+# backend/app/models/vendor.py
+from __future__ import annotations
 from datetime import datetime
 from typing import List, Optional
 from sqlmodel import SQLModel, Field, Relationship
 
-
-class Customer(SQLModel, table=True):
+class Vendor(SQLModel, table=True):
     """
-    Cliente externo.
+    Proveedor externo.
     """
     id: Optional[int] = Field(default=None, primary_key=True)
     business_id: int  = Field(foreign_key="business.id")
@@ -16,6 +16,6 @@ class Customer(SQLModel, table=True):
     address: Optional[str] = None
     created_at: datetime = Field(default_factory=datetime.utcnow)
 
-    business: "Business" = Relationship(back_populates="customers")
-    invoices: List["Invoice"] = Relationship(back_populates="customer")
-    payments: List["Payment"] = Relationship(back_populates="customer")
+    business: "Business" = Relationship(back_populates="vendors")
+    expenses: List["Expense"] = Relationship(back_populates="vendor")
+    payments: List["Payment"] = Relationship(back_populates="vendor")
