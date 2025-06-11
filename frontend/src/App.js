@@ -9,7 +9,6 @@ import Companies  from "./pages/Companies";
 import Customers  from "./pages/Customers";
 import Products   from "./pages/Products";
 import Invoices   from "./pages/Invoices";
-import Stock      from "./pages/Stock";
 import AuthGuard  from "./components/AuthGuard";
 
 const queryClient = new QueryClient();
@@ -30,8 +29,7 @@ function App() {
             <Route path="/companies" element={<Companies />} />
             <Route path="/customers" element={<Customers />} />
             <Route path="/products"  element={<Products />} />
-            <Route path="/invoices"  element={<Invoices />} />
-            <Route path="/stock"     element={<Stock />} />
+            <Route path="/invoices"  element={<Invoices />} />  
 
 
           {/* Fallback */}

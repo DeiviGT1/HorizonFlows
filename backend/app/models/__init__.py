@@ -9,6 +9,7 @@ from .payment import Payment
 from .customer import Customer
 from .vendor import Vendor
 from .category import Category
+from .product import Product
 
 
 __all__ = [
@@ -24,4 +25,5 @@ __all__ = [
     "Customer",
     "Vendor",
     "Category",
+    "Product",
 ]
