@@ -73,3 +73,33 @@ def require_permissions(required_scopes: list[str]):
                 raise HTTPException(status_code=403, detail="Permisos insuficientes.")
         return token_data
     return verifier
+
+def require_role(required_role: str):
+    """
+    Genera una dependencia que verifica si un rol específico existe en el token.
+    """
+    def verifier(token: HTTPAuthorizationCredentials = Depends(http_bearer)) -> bool:
+        # Reutilizamos la lógica de validación del token de verify_jwt
+        # pero aquí solo necesitamos el payload decodificado.
+        try:
+            unverified_header = jwt.get_unverified_header(token.credentials)
+            jwks = get_jwks()
+            public_key = next((jwt.construct_rsa_key(jwk) for jwk in jwks["keys"] if jwk["kid"] == unverified_header["kid"]), None)
+            if public_key is None:
+                raise HTTPException(status_code=403, detail="Clave pública no encontrada.")
+
+            payload = jwt.decode(
+                token.credentials, public_key, algorithms=ALGORITHMS,
+                audience=API_AUDIENCE, issuer=f"https://{AUTH0_DOMAIN}/"
+            )
+        except JWTError:
+            raise HTTPException(status_code=403, detail="Token inválido o expirado.")
+
+        # Buscamos el claim de roles que definimos en la Action de Auth0
+        roles = payload.get("https://horizonflows.com/roles", [])
+
+        if required_role not in roles:
+            raise HTTPException(status_code=403, detail="Permisos insuficientes. Rol de administrador requerido.")
+
+        return True
+    return verifier

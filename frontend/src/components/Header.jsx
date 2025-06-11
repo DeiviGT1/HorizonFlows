@@ -11,6 +11,10 @@ export default function Header() {
   // Opcional: mientras Auth0 hidrata la sesión evita el parpadeo
   if (isLoading) return null;
 
+  const adminRoleNamespace = 'https://horizonflows.com/roles';
+  const isUserAdmin = user && user[adminRoleNamespace]?.includes('admin');
+
+
   return (
     <header className="header flex items-center justify-between">
       {/* Branding + navegación */}
@@ -28,6 +32,9 @@ export default function Header() {
             <Link to="/customers">Customers</Link>
             <Link to="/companies">Companies</Link>
             <Link to="/invoices">Invoices</Link>
+            {isUserAdmin && (
+              <Link to="/admin/onboarding" style={{ color: '#21A0A0' }}>Admin Onboarding</Link>
+            )}
           </nav>
         )}
       </div>

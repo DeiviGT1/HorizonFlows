@@ -1,6 +1,7 @@
 # backend/alembic/env.py
 from dotenv import load_dotenv
 load_dotenv()
+from app.models.business import Business
 
 from logging.config import fileConfig
 import os
@@ -18,6 +19,7 @@ if config.config_file_name:
 
 # 👇 Use your models' metadata as the target
 target_metadata = SQLModel.metadata
+Business.metadata.schema = "public"
 
 def run_migrations_offline():
     # This part is mostly for offline generation, we can leave it as is
