@@ -17,6 +17,7 @@ RUN apt-get update && apt-get install -y wkhtmltopdf \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --from=builder /install /usr/local
-COPY backend/ ./
+#COPY backend/ ./
+COPY . ./
 
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]

@@ -17,6 +17,7 @@ export default function AdminRoute({ element }) {
 
   // 2. Definimos el namespace que usaste en la Action de Auth0
   const adminRoleNamespace = 'https://horizonflows.com/roles';
+  console.log("adminRoleNamespace",adminRoleNamespace);
 
   // 3. Verificamos si el usuario está autenticado Y si tiene el rol de 'admin'
   const isUserAdmin = 

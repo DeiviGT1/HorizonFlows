@@ -1,30 +1,24 @@
+// src/pages/Products.jsx (Updated)
 import React from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useApi } from "../hooks/useApi";
 import { useSortableData } from "../hooks/useSortableData";
+import { useCompany } from "../context/CompanyContext"; // 👈 IMPORT
 
 export default function Products() {
   const qc = useQueryClient();
   const api = useApi();
+  const { currentCompany } = useCompany(); // 👈 USE THE CONTEXT
 
-  // 1️⃣ Traer productos
-  const {
-    data: products = [],
-    isLoading,
-  } = useQuery({
-    queryKey: ["products"],
+  const { data: products = [], isLoading } = useQuery({
+    queryKey: ["products", currentCompany?.id], // Add company ID to queryKey
     queryFn: async () => (await api.get("/products/")).data,
+    enabled: !!currentCompany, // Only run query if company is loaded
   });
 
-  // hook de orden
-  const { items: sortedProducts, requestSort, sortConfig } =
-    useSortableData(products);
+  const { items: sortedProducts, requestSort, sortConfig } = useSortableData(products);
   const getClassNamesFor = (name) =>
-    sortConfig?.key === name
-      ? sortConfig.direction === "ascending"
-        ? " ▲"
-        : " ▼"
-      : "";
+    sortConfig?.key === name ? (sortConfig.direction === "ascending" ? " ▲" : " ▼") : "";
 
   // 2️⃣ Eliminar
   const deleteMutation = useMutation({
@@ -33,29 +27,33 @@ export default function Products() {
   });
   // 3️⃣ Crear demo
   const createMutation = useMutation({
-    mutationFn: () =>
-      api.post("/products/", {
-        company_id: 1,
-        sku: "PRD-001",
-        name: "Servicio Demo",
-        type: "service",
-        unit_price: 150.0,
-        tax_rate: 0.07,
-      }),
-    onSuccess: () => qc.invalidateQueries(["products"]),
+    mutationFn: (newProduct) => api.post("/products/", newProduct),
+    onSuccess: () => qc.invalidateQueries(["products", currentCompany?.id]),
   });
+
+  const handleCreateDemo = () => {
+    if (!currentCompany) return; // Guard clause
+    createMutation.mutate({
+      // 👇 FIX THE HARDCODED ID
+      company_id: currentCompany.id,
+      sku: `SKU-${Math.floor(Math.random() * 1000)}`,
+      name: "Servicio Demo",
+      type: "service",
+      unit_price: 150.0,
+      tax_rate: 0.07,
+    })
+  }
 
   return (
     <div className="px-40 flex flex-1 justify-center py-5 bg-[#0f1524] min-h-screen">
       <div className="layout-content-container flex flex-col max-w-[960px] w-full">
-        {/* Header */}
         <div className="flex flex-wrap justify-between items-center gap-3 p-4">
           <p className="text-white tracking-light text-[32px] font-bold leading-tight min-w-72">
-            Productos
+            {currentCompany?.name}: Productos
           </p>
           <button
-            onClick={() => createMutation.mutate()}
-            className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center rounded h-8 px-4 bg-[#20344b] text-white text-sm hover:bg-[#2a4262]"
+            onClick={handleCreateDemo} // Use the new handler
+            className="..."
           >
             + Nuevo
           </button>
