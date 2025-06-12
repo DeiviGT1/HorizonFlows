@@ -2,15 +2,10 @@
 # Instala las dependencias en un directorio separado para mantener la imagen final ligera
 FROM python:3.9-slim as builder
 
-# Instala dependencias del sistema operativo si son necesarias (ej. para wkhtmltopdf)
-# RUN apt-get update && apt-get install -y ...
-
 WORKDIR /app
 
-# 👇 CORRECCIÓN 1: No se necesita el prefijo "backend/"
 COPY requirements.txt .
 
-# Instala las dependencias de Python en un directorio de instalación específico
 RUN pip install --upgrade pip && pip install --prefix=/install -r requirements.txt
 
 
@@ -18,17 +13,20 @@ RUN pip install --upgrade pip && pip install --prefix=/install -r requirements.t
 # La imagen final que correrá la aplicación
 FROM python:3.9-slim
 
+# 👇 CORRECCIÓN: Instalar wkhtmltopdf y sus dependencias de fuentes
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    wkhtmltopdf \
+    xfonts-75dpi \
+    xfonts-base \
+    && apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
 WORKDIR /app
 
-# Copia las dependencias instaladas desde la etapa 'builder'
 COPY --from=builder /install /usr/local
-
-# 👇 CORRECCIÓN 2: No se necesita el prefijo "backend/"
-# Copia todo el código de la aplicación
 COPY . .
 
-# Expone el puerto que usará la aplicación
 EXPOSE 8000
 
-# Comando para iniciar la aplicación (sin --reload para producción)
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
