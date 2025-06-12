@@ -3,7 +3,7 @@ from sqlmodel import Session
 from sqlalchemy import delete
 
 from app.core.db import get_session
-from app.models import InvoiceLine, Invoice, Product, Customer, Company
+from app.models import InvoiceLine, Invoice, Product, Customer, Business
 from app.core.auth import verify_jwt
 
 router = APIRouter(prefix="/dev", tags=["devtools"], dependencies=[Depends(verify_jwt)])
@@ -27,11 +27,11 @@ def purge_customers(session: Session = Depends(get_session)):
     session.commit()
     return {"deleted_customers": res.rowcount}
 
-@router.delete("/purge-companies", summary="PURGA total de empresas")
-def purge_companies(session: Session = Depends(get_session)):
-    res = session.exec(delete(Company))
+@router.delete("/purge-businesses", summary="PURGA total de empresas")
+def purge_businesses(session: Session = Depends(get_session)):
+    res = session.exec(delete(Business))
     session.commit()
-    return {"deleted_companies": res.rowcount}
+    return {"deleted_businesses": res.rowcount}
 
 @router.delete("/purge-all", summary="PURGA total de datos")
 def purge_all(session: Session = Depends(get_session)):
@@ -39,6 +39,6 @@ def purge_all(session: Session = Depends(get_session)):
     session.exec(delete(Invoice))
     session.exec(delete(Product))
     session.exec(delete(Customer))
-    session.exec(delete(Company))
+    session.exec(delete(Business))
     session.commit()
     return {"message": "All data purged successfully"}
