@@ -11,6 +11,7 @@ import AuthGuard from "./components/AuthGuard";
 import AdminOnboarding from "./pages/AdminOnboarding";
 import AdminRoute from "./components/AdminRoute";
 import { CompanyProvider } from "./context/CompanyContext";
+import TestPage from "./pages/TestPage";
 
 const queryClient = new QueryClient();
 
@@ -23,7 +24,7 @@ function App() {
           <CompanyProvider> 
             <Header />
             <Routes>
-              <Route path="/" element={<Navigate to="/dashboard" replace />} />
+              <Route path="/" element={<TestPage />} /> 
               <Route path="/dashboard" element={<Dashboard />} />
               {/* Note: The '/companies' route seems for admin purposes. 
                   It should fetch from the master DB, not the tenant DB. */}
