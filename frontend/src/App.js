@@ -31,10 +31,7 @@ function App() {
               <Route path="/customers" element={<Customers />} />
               <Route path="/products" element={<Products />} />
               <Route path="/invoices" element={<Invoices />} />
-              <Route
-                path="/admin/onboarding"
-                element={<AdminRoute element={<AdminOnboarding />} />}
-              />
+              <Route path="/admin/onboarding" element={<AdminRoute element={<AdminOnboarding />} />}/>
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </CompanyProvider>
