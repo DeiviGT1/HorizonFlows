@@ -13,8 +13,7 @@ const redirectUri = window.location.origin;
 const root = ReactDOM.createRoot(document.getElementById("root")); // 👈 createRoot instead of render
 root.render(
   <React.StrictMode>
-    <h1>Hola Mundo</h1>
-    {/* <Auth0Provider
+    <Auth0Provider
       domain={domain}
       clientId={clientId}
       cacheLocation="localstorage"   // ⬅️  NUEVO
@@ -25,7 +24,9 @@ root.render(
         scope: "openid profile email",
       }}  
     >
-      <App />
-    </Auth0Provider> */}
+
+      <h1>Hola Mundo</h1>
+      {/* <App /> */}
+    </Auth0Provider>
   </React.StrictMode>
 );
