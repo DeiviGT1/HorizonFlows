@@ -13,7 +13,8 @@ const redirectUri = window.location.origin;
 const root = ReactDOM.createRoot(document.getElementById("root")); // 👈 createRoot instead of render
 root.render(
   <React.StrictMode>
-    <Auth0Provider
+    <h1>Hola Mundo</h1>
+    {/* <Auth0Provider
       domain={domain}
       clientId={clientId}
       cacheLocation="localstorage"   // ⬅️  NUEVO
@@ -25,6 +26,6 @@ root.render(
       }}  
     >
       <App />
-    </Auth0Provider>
+    </Auth0Provider> */}
   </React.StrictMode>
 );
