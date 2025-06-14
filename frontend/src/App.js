@@ -18,22 +18,13 @@ const queryClient = new QueryClient();
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <h1>Hola Mundo0</h1>
       <BrowserRouter>
-      <h1>Hola Mundo1</h1>
         <AuthGuard>
-          <h1>Hola Mundo2</h1>
-          {/* 👇 WRAP your components */}
           <CompanyProvider> 
             <Header />
-            <h1>Hola Mundo3</h1>
             <Routes>
-              <h1>Hola Mundo4</h1>
               <Route path="/" element={<TestPage />} /> 
               <Route path="/dashboard" element={<Dashboard />} />
-              <h1>Hola Mundo5</h1>
-              {/* Note: The '/companies' route seems for admin purposes. 
-                  It should fetch from the master DB, not the tenant DB. */}
               <Route path="/customers" element={<Customers />} />
               <Route path="/products" element={<Products />} />
               <Route path="/invoices" element={<Invoices />} />
