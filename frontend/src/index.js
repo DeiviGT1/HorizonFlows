@@ -25,8 +25,7 @@ root.render(
       }}  
     >
 
-      <h1>Hola Mundo</h1>
-      {/* <App /> */}
+      <App />
     </Auth0Provider>
   </React.StrictMode>
 );
