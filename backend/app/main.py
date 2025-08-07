@@ -11,6 +11,7 @@ app = FastAPI(title="HorizonFlows API")
 origins = [
     "http://localhost:3000",  # El origen de tu frontend React
     "http://127.0.0.1:3000", # IP local para el frontend
+    "https://horizonflows.com",  # Tu dominio principal de producción
 ]
 
 app.add_middleware(TenantMiddleware)
