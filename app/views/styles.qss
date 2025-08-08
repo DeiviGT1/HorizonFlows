@@ -1,0 +1,132 @@
+/* app/views/styles.qss */
+
+/* --- General Window & Font Settings --- */
+/* Use system fonts for better cross-platform look. -apple-system is for macOS. */
+QWidget {
+    background-color: #f8f9fa;
+    color: #212529;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+}
+
+QMainWindow {
+    background-color: #ffffff;
+}
+
+/* --- Top Toolbar --- */
+QToolBar {
+    background-color: #ffffff;
+    border: none;
+    padding: 5px;
+}
+QToolButton {
+    color: #495057;
+    padding: 8px 12px;
+    font-size: 14px;
+    border-radius: 6px;
+}
+QToolButton:hover {
+    background-color: #f1f3f5;
+}
+QToolButton:checked {
+    color: #212529;
+    background-color: #e9ecef;
+}
+
+/* --- GroupBox Containers --- */
+QGroupBox {
+    background-color: #ffffff;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    margin-top: 12px;
+    padding-top: 10px;
+}
+QGroupBox::title {
+    subcontrol-origin: margin;
+    subcontrol-position: top left;
+    padding: 0 10px;
+    margin-left: 10px;
+    color: #212529;
+    font-weight: 500;
+    font-size: 16px;
+}
+
+/* --- Input Fields --- */
+QLineEdit {
+    background-color: #ffffff;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    padding: 12px;
+}
+QLineEdit:focus {
+    border-color: #007bff;
+}
+
+/* --- Buttons --- */
+QPushButton {
+    background-color: #ffffff;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    padding: 12px;
+}
+QPushButton:hover {
+    background-color: #f8f9fa;
+}
+
+/* Specific Buttons using objectName */
+#process_payment_button {
+    background-color: #212529;
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 16px;
+    border: none;
+}
+#process_payment_button:hover {
+    background-color: #343a40;
+}
+
+#payment_method_button {
+    text-align: center;
+    padding: 15px;
+}
+#payment_method_button:checked {
+    background-color: #f8f9fa;
+    border: 1px solid #adb5bd;
+}
+
+#secondary_action_button {
+    background-color: transparent;
+    border: none;
+    color: #495057;
+}
+#secondary_action_button:hover {
+    background-color: #e9ecef;
+}
+
+/* --- Order Items Table --- */
+QTableWidget {
+    background-color: #ffffff;
+    border: none;
+    gridline-color: #f1f3f5;
+}
+QHeaderView::section {
+    background-color: #ffffff;
+    border: none;
+    font-weight: 600;
+    padding: 10px;
+    color: #868e96;
+    text-align: left;
+}
+QTableWidget::item {
+    padding-left: 10px;
+    padding-right: 10px;
+    border-bottom: 1px solid #f1f3f5;
+}
+
+/* --- Labels in Summary --- */
+#summary_label { color: #495057; }
+#summary_value { font-weight: 500; }
+#total_label, #total_value {
+    font-size: 18px;
+    font-weight: 600;
+}
