@@ -2,7 +2,7 @@
 
 from sqlmodel import Session, select
 from app.core.database import engine, create_db_and_tables
-from app.models.product import Product
+from app.models.models import Product, Vendor, Category, PurchaseOrder, PurchaseOrderLine, GoodsReceipt, GoodsReceiptLine, Customer, Sale, SaleLine, Payment, Expense, ExpenseCategory
 # Si tu modelo de producto necesita un 'company_id', también necesitarás el modelo 'Business'.
 # from app.models.business import Business 
 
@@ -30,12 +30,11 @@ def run_test():
 
         # Crea una instancia de tu modelo Product
         test_product = Product(
-            # company_id=test_business.id, # Si es necesario
             sku="TEST-001",
             name="Café de Prueba",
-            type="good",
-            unit_price=2.50,
-            tax_rate=0.08
+            sale_price=2.50,
+            purchase_price=1.50,
+            stock=100
         )
 
         # Añade el producto a la sesión y guárdalo en la base de datos
@@ -54,7 +53,7 @@ def run_test():
         if product_in_db:
             print(f"✅ ¡ÉXITO! Se encontró el producto en la base de datos.")
             print(f"   -> Nombre: {product_in_db.name}")
-            print(f"   -> Precio: ${product_in_db.unit_price}")
+            print(f"   -> Precio: ${product_in_db.sale_price}")
         else:
             print("❌ ¡FALLO! No se pudo encontrar el producto después de crearlo.")
 
