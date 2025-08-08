@@ -74,14 +74,13 @@ class TerminalView(QWidget):
         self.order_items_table.horizontalHeader().setVisible(False)
         
         header = self.order_items_table.horizontalHeader()
-        # ▼▼▼ AJUSTE FINAL DE ANCHO DE COLUMNAS ▼▼▼
-        header.setSectionResizeMode(0, QHeaderView.Stretch)      # Producto (ocupa el espacio restante)
-        header.setSectionResizeMode(1, QHeaderView.Fixed)        # Cantidad (ancho fijo)
-        header.setSectionResizeMode(2, QHeaderView.ResizeToContents) # Precio (se ajusta al contenido)
-        header.setSectionResizeMode(3, QHeaderView.Fixed)        # Papelera (ancho fijo)
+        header.setSectionResizeMode(0, QHeaderView.Stretch)
+        header.setSectionResizeMode(1, QHeaderView.Fixed)
+        header.setSectionResizeMode(2, QHeaderView.ResizeToContents)
+        header.setSectionResizeMode(3, QHeaderView.Fixed)
         
-        self.order_items_table.setColumnWidth(1, 70) # Ancho para Cantidad
-        self.order_items_table.setColumnWidth(3, 60) # Ancho más grande para la Papelera
+        self.order_items_table.setColumnWidth(1, 70)
+        self.order_items_table.setColumnWidth(3, 60)
 
         self.order_items_table.setShowGrid(False)
         self.order_items_table.setSelectionMode(QAbstractItemView.NoSelection)
@@ -200,6 +199,11 @@ class TerminalView(QWidget):
             price_item = QTableWidgetItem(f"${total_price:.2f}")
             price_item.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
             font = price_item.font(); font.setBold(True); price_item.setFont(font)
+            
+            # ▼▼▼ ¡AQUÍ ESTÁ LA LÍNEA CLAVE! ▼▼▼
+            # Hacemos que la celda no sea editable.
+            price_item.setFlags(price_item.flags() & ~Qt.ItemIsEditable)
+            
             table.setItem(row, 2, price_item)
             
             delete_btn_container = QWidget()
