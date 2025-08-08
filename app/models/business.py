@@ -8,7 +8,6 @@ class Business(SQLModel, table=True):
     Tu “empresa” raíz. Se almacena en la BD maestra.
     """
     __tablename__ = "business"
-    __table_args__ = {"schema": "public"} # ⬅️ Importante para Alembic
 
     id: Optional[int] = Field(default=None, primary_key=True)
     name: str
