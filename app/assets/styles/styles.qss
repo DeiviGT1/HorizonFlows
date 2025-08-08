@@ -227,3 +227,30 @@ QLineEdit:focus {
 #final_action_button:hover {
     color: #212529;
 }
+
+/* Estilo para los botones oscuros */
+QPushButton#dark_button {
+    background-color: #333;
+    color: #fff;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+}
+
+
+QPushButton#dark_button:hover {
+    background-color: #555;
+}
+
+
+/* Estilo para el footer */
+QWidget#footer {
+    background-color: #f0f0f0;
+    border-top: 1px solid #ccc;
+}
+
+
+QLabel#footer_label {
+    font-size: 11px;
+    color: #555;
+}

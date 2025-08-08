@@ -12,11 +12,11 @@ if __name__ == "__main__":
 
     # Carga la hoja de estilos desde la nueva ubicación en 'assets'
     try:
-        with open("app/assets/styles/main.qss", "r") as f:
+        with open("app/assets/styles/styles.qss", "r") as f:
             style = f.read()
             app.setStyleSheet(style)
     except FileNotFoundError:
-        print("Advertencia: No se encontró 'main.qss'. La aplicación se ejecutará sin estilos personalizados.")
+        print("Advertencia: No se encontró 'styles.qss'. La aplicación se ejecutará sin estilos personalizados.")
     
     # Crea y muestra la ventana principal
     window = MainWindow()
