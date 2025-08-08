@@ -24,4 +24,4 @@ class JournalLine(SQLModel, table=True):
     credit: float = Field(default=0.0)
 
     entry: "JournalEntry" = Relationship(back_populates="lines")
-    account: "ChartOfAccount" = Relationship()
+    account: "ChartOfAccount" = Relationship(back_populates="journal_lines")

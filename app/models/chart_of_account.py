@@ -24,4 +24,12 @@ class ChartOfAccount(SQLModel, table=True):
         back_populates="parent",
         sa_relationship_kwargs={"cascade": "all,delete-orphan"}
     )
-    parent: Optional["ChartOfAccount"] = Relationship(back_populates="children")
+
+    parent: Optional["ChartOfAccount"] = Relationship(
+        back_populates="children",
+        sa_relationship_kwargs={'remote_side': 'ChartOfAccount.id'}
+    )
+
+    invoice_lines: List["InvoiceLine"] = Relationship(back_populates="account")
+    expense_lines: List["ExpenseLine"] = Relationship(back_populates="account")
+    category: Optional["Category"] = Relationship(back_populates="account")

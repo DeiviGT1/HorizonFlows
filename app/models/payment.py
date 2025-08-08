@@ -21,4 +21,4 @@ class Payment(SQLModel, table=True):
     business: "Business"          = Relationship(back_populates="payments")
     customer: Optional["Customer"] = Relationship(back_populates="payments")
     vendor:   Optional["Vendor"]   = Relationship(back_populates="payments")
-    entry:    Optional["JournalEntry"] = Relationship()
+    entry:    Optional["JournalEntry"] = Relationship(back_populates="payments")

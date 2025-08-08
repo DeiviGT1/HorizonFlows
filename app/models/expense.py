@@ -32,3 +32,4 @@ class ExpenseLine(SQLModel, table=True):
 
     # Vincula de vuelta a la Expense
     expense: Optional["Expense"] = Relationship(back_populates="lines")
+    account: Optional["ChartOfAccount"] = Relationship(back_populates="expense_lines")

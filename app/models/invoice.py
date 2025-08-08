@@ -17,9 +17,9 @@ class Invoice(SQLModel, table=True):
     total_amount: float = 0.0
     created_at: datetime = Field(default_factory=datetime.utcnow)
 
-    business: "Business" = Relationship()
-    customer: "Customer" = Relationship()
-    entry:    Optional["JournalEntry"] = Relationship()
+    business: "Business" = Relationship(back_populates="invoices")
+    customer: "Customer" = Relationship(back_populates="invoices")
+    entry:    Optional["JournalEntry"] = Relationship(back_populates="invoices")
     lines:    List["InvoiceLine"]    = Relationship(back_populates="invoice")
 
 class InvoiceLine(SQLModel, table=True):
@@ -33,6 +33,12 @@ class InvoiceLine(SQLModel, table=True):
     description: Optional[str] = None
     amount: float = 0.0
 
-    invoice: "Invoice" = Relationship()
+    invoice: "Invoice" = Relationship(back_populates="lines")
     account: "ChartOfAccount" = Relationship(back_populates="invoice_lines")
     category: Optional["Category"] = Relationship(back_populates="invoice_lines")
+    product: Optional["Product"] = Relationship(back_populates="invoice_lines")
+    expense_line: Optional["ExpenseLine"] = Relationship(back_populates="invoice_lines")
+    journal_line: Optional["JournalLine"] = Relationship(back_populates="invoice_lines")
+    vendor: Optional["Vendor"] = Relationship(back_populates="invoice_lines")
+    expense: Optional["Expense"] = Relationship(back_populates="invoice_lines")
+    payment: Optional["Payment"] = Relationship(back_populates="invoice_lines")

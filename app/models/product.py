@@ -16,4 +16,4 @@ class Product(SQLModel, table=True):
     tax_rate: float = 0.0
 
     # Relación (opcional por ahora, pero buena práctica)
-    # business: "Business" = Relationship()
+    business: "Business" = Relationship(back_populates="products")

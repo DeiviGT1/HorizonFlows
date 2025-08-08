@@ -38,3 +38,5 @@ class Category(SQLModel, table=True):
         back_populates="category",
         sa_relationship_kwargs={"lazy": "selectin"}
     )
+
+    account: Optional["ChartOfAccount"] = Relationship(back_populates="category")

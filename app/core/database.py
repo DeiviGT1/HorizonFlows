@@ -6,7 +6,7 @@ from sqlmodel import create_engine, Session, SQLModel
 # Datos de conexión. Reemplaza con tus valores.
 DB_USER = "owner"  # El usuario que creaste en pgAdmin
 DB_PASSWORD = "postgres"
-DB_HOST = "10.1.10.203" # 👈 ¡La IP local de tu máquina servidor!
+DB_HOST = "localhost" # 👈 ¡La IP local de tu máquina servidor!
 DB_PORT = "5432" # Puerto por defecto de PostgreSQL
 DB_NAME = "pos_tienda" # La base de datos que creaste
 
