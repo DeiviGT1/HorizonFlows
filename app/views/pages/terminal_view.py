@@ -10,6 +10,7 @@ from PySide6.QtGui import QIcon, QPixmap, QFont
 class TerminalView(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
+        self.setObjectName("terminal_page") 
         main_layout = QVBoxLayout(self)
         main_layout.setContentsMargins(0, 0, 0, 0)
         main_layout.setSpacing(0)
@@ -219,15 +220,6 @@ class TerminalView(QWidget):
         main_layout.addWidget(pay_btn)
 
         return container
-
-    def _update_payment_icons(self):
-        if self.cash_btn.isChecked():
-            self.cash_btn.setIcon(self.icon_cash_white)
-            self.card_btn.setIcon(self.icon_card_dark)
-        else:
-            self.cash_btn.setIcon(self.icon_cash_dark)
-            self.card_btn.setIcon(self.icon_card_white if self.card_btn.isChecked() else self.icon_card_dark)
-
 
     def _populate_sample_data(self, table: QTableWidget):
         # Este método se mantiene igual

@@ -1,0 +1,164 @@
+/*
+ * ===================================================================
+ * terminal.qss - Estilos específicos de TerminalView
+ * ===================================================================
+ * Alcance: SOLO dentro de QWidget#terminal_page (TerminalView).
+ * Evita colisiones con otras páginas.
+ * Estructura:
+ * 1. Barra de búsqueda / acciones (panel izquierdo)
+ * 2. Tabla de artículos
+ * 3. Resumen de Orden (panel derecho)
+ * ===================================================================
+*/
+
+/* SCOPING ROOT */
+QWidget#terminal_page {
+    /* nada aquí por ahora; el fondo ya viene de base */
+}
+
+/* 1) BUSCADOR Y ACCIONES (IZQUIERDA) */
+QWidget#terminal_page #search_container {
+    background-color: #ffffff;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+}
+QWidget#terminal_page #search_input {
+    border: none;
+    background-color: transparent;
+    font-size: 15px;
+}
+QWidget#terminal_page #search_input:focus { border: none; }
+
+QWidget#terminal_page #options_button {
+    background-color: #ffffff;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    font-weight: 500;
+    padding: 10px 20px;
+    height: 48px;
+}
+QWidget#terminal_page #options_button:hover {
+    background-color: #f8f9fa;
+    border-color: #ced4da;
+}
+
+/* 2) TABLA DE ARTÍCULOS */
+QWidget#terminal_page #product_name_label {
+    font-size: 15px;
+    font-weight: 500;
+}
+QWidget#terminal_page #sku_label {
+    color: #6c757d;
+    font-size: 13px;
+}
+QWidget#terminal_page #quantity_input {
+    border: 1px solid #dee2e6;
+    background-color: #ffffff;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: 500;
+    padding: 0 5px;
+}
+QWidget#terminal_page #quantity_input:focus { border: 1px solid #86b7fe; }
+
+QWidget#terminal_page #delete_button {
+    border: none;
+    background-color: transparent;
+    border-radius: 16px;
+}
+QWidget#terminal_page #delete_button:hover { background-color: #fceeee; }
+
+/* 3) RESUMEN DE ORDEN (DERECHA) */
+QGroupBox#main_summary_panel {
+    background: #ffffff;
+    border: 1px solid #dee2e6;
+    border-radius: 10px;
+}
+QGroupBox#main_summary_panel::title {
+    color: #212529;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 8px 0 0 0;
+    margin-left: 10px;
+}
+
+/* Cajita superior con total de productos */
+QWidget#terminal_page #total_products_box {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 10px;
+}
+QWidget#terminal_page #summary_subtitle {
+    color: #6c757d;
+    font-size: 13px;
+    font-weight: 600;
+}
+QWidget#terminal_page #summary_big {
+    font-size: 22px;
+    font-weight: 800;
+    color: #212529;
+    margin-top: 2px;
+}
+
+/* Filas Subtotal/IVA/Descuento */
+QWidget#terminal_page #summary_row_label {
+    color: #6c757d;
+    background-color: transparent;
+    font-size: 14px;
+}
+QWidget#terminal_page #summary_row_value {
+    color: #212529;
+    font-size: 14px;
+}
+QWidget#terminal_page #summary_total_label {
+    background-color: transparent;
+    color: #212529;
+    font-weight: 700;
+    font-size: 17px;
+}
+QWidget#terminal_page #summary_total_value {
+    color: #212529;
+    font-weight: 800;
+    font-size: 20px;
+}
+
+/* Combobox cliente */
+QComboBox#client_combo {
+    min-height: 40px;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 6px 10px;
+}
+
+/* Toggle método de pago */
+QPushButton#pay_method_btn {
+    background: #f1f3f5;
+    border: 1px solid #dee2e6;
+    color: #212529;
+    border-radius: 10px;
+    padding: 10px 16px;
+    font-weight: 600;
+}
+QPushButton#pay_method_btn:hover { background: #e9ecef; }
+QPushButton#pay_method_btn:checked {
+    border-color: #d9dbdd;
+    background-color: #ffffff;
+    color: #212529;
+}
+
+/* Input recibido y cambio */
+QWidget#terminal_page #money_input {
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 6px 10px;
+    font-size: 15px;
+}
+QWidget#terminal_page #money_input:focus { border: 1px solid #86b7fe; }
+
+QWidget#terminal_page #change_value {
+    font-size: 18px;
+    font-weight: 800;
+    color: #212529;
+}
+
+/* Botón primario (reutiliza #primary_button global) */
