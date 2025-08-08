@@ -1,11 +1,11 @@
-# app/views/terminal_view.py
+# app/views/pages/terminal_view.py
 from PySide6.QtWidgets import (
     QWidget, QHBoxLayout, QVBoxLayout, QLineEdit, QPushButton, QTableWidget,
     QTableWidgetItem, QHeaderView, QLabel, QFormLayout, QComboBox, QGroupBox,
-    QSpacerItem, QSizePolicy, QAbstractItemView, QButtonGroup, QFrame
+    QFrame, QButtonGroup, QAbstractItemView
 )
 from PySide6.QtCore import Qt, QSize
-from PySide6.QtGui import QIcon, QPixmap, QFont
+from PySide6.QtGui import QIcon, QPixmap
 
 class TerminalView(QWidget):
     def __init__(self, parent=None):
@@ -21,7 +21,8 @@ class TerminalView(QWidget):
         main_layout.addWidget(right_panel, 3)
 
     def _get_icon(self, name):
-        return QIcon(f"app/icons/{name}")
+        # La ruta a los iconos ahora apunta a la carpeta 'assets'
+        return QIcon(f"app/assets/icons/{name}")
 
     def _create_search_bar(self):
         search_container = QWidget()
@@ -33,11 +34,9 @@ class TerminalView(QWidget):
         search_layout.setSpacing(10)
 
         icon_label = QLabel()
-        try:
-            pixmap = QPixmap("app/icons/search.svg")
-            icon_label.setPixmap(pixmap.scaled(20, 20, Qt.KeepAspectRatio, Qt.SmoothTransformation))
-        except:
-            pass 
+        # Ruta del icono de búsqueda actualizada
+        pixmap = QPixmap("app/assets/icons/search.svg")
+        icon_label.setPixmap(pixmap.scaled(20, 20, Qt.KeepAspectRatio, Qt.SmoothTransformation))
 
         self.search_input = QLineEdit()
         self.search_input.setPlaceholderText("Escanear código o buscar producto...")
@@ -68,20 +67,18 @@ class TerminalView(QWidget):
         order_layout = QVBoxLayout(order_box)
 
         self.order_items_table = QTableWidget()
+        # ... (resto de la configuración de la tabla como estaba)
         self.order_items_table.setColumnCount(4)
         self.order_items_table.setHorizontalHeaderLabels(["Producto", "Cantidad", "Precio", ""])
         self.order_items_table.verticalHeader().setVisible(False)
         self.order_items_table.horizontalHeader().setVisible(False)
-        
         header = self.order_items_table.horizontalHeader()
         header.setSectionResizeMode(0, QHeaderView.Stretch)
         header.setSectionResizeMode(1, QHeaderView.Fixed)
         header.setSectionResizeMode(2, QHeaderView.ResizeToContents)
         header.setSectionResizeMode(3, QHeaderView.Fixed)
-        
         self.order_items_table.setColumnWidth(1, 70)
         self.order_items_table.setColumnWidth(3, 60)
-
         self.order_items_table.setShowGrid(False)
         self.order_items_table.setSelectionMode(QAbstractItemView.NoSelection)
         self.order_items_table.setFocusPolicy(Qt.NoFocus)
@@ -104,6 +101,7 @@ class TerminalView(QWidget):
         return container
 
     def _create_right_panel(self):
+        # ... (el panel derecho es idéntico, solo asegúrate de que _get_icon se use para todos los iconos)
         container = QWidget()
         layout = QVBoxLayout(container)
         layout.setContentsMargins(0, 0, 0, 0)
@@ -114,9 +112,11 @@ class TerminalView(QWidget):
         customer_combo = QComboBox()
         customer_combo.addItem("Cliente General")
         customer_combo.setFixedHeight(48)
+        # Actualiza el icono del dropdown en tu QSS a: url(app/assets/icons/chevron-down.svg);
         customer_layout.addWidget(customer_combo)
 
         summary_box = QGroupBox("Resumen de Orden")
+        # ... (contenido del resumen sin cambios)
         summary_layout = QFormLayout(summary_box)
         summary_layout.setRowWrapPolicy(QFormLayout.WrapAllRows)
         summary_layout.setVerticalSpacing(12)
@@ -157,7 +157,7 @@ class TerminalView(QWidget):
         print_button = QPushButton(" Imprimir"); print_button.setObjectName("final_action_button"); print_button.setIcon(self._get_icon("printer.svg"))
         email_button = QPushButton(" Email"); email_button.setObjectName("final_action_button"); email_button.setIcon(self._get_icon("mail.svg"))
         final_actions_layout.addStretch(); final_actions_layout.addWidget(print_button); final_actions_layout.addWidget(email_button); final_actions_layout.addStretch()
-
+        
         layout.addWidget(customer_box)
         layout.addWidget(summary_box)
         layout.addWidget(payment_method_box)
@@ -165,9 +165,11 @@ class TerminalView(QWidget):
         layout.addStretch()
         layout.addWidget(process_payment_button)
         layout.addLayout(final_actions_layout)
+        
         return container
 
     def _populate_sample_data(self, table: QTableWidget):
+        # ... (El método para poblar datos es idéntico, solo asegúrate de que _get_icon se use correctamente)
         sample_items = [
             {"name": "Coca Cola 600ml", "sku": "CC600", "qty": 2, "price": 1.75},
             {"name": "Pan Integral", "sku": "PI001", "qty": 1, "price": 2.25},
@@ -176,6 +178,7 @@ class TerminalView(QWidget):
         table.setRowCount(len(sample_items))
 
         for row, item in enumerate(sample_items):
+            # ... (Lógica para crear widgets de producto, cantidad y precio sin cambios)
             product_widget = QWidget()
             product_layout = QVBoxLayout(product_widget)
             product_layout.setContentsMargins(10, 8, 10, 8); product_layout.setSpacing(2)
@@ -199,13 +202,9 @@ class TerminalView(QWidget):
             price_item = QTableWidgetItem(f"${total_price:.2f}")
             price_item.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
             font = price_item.font(); font.setBold(True); price_item.setFont(font)
-            
-            # ▼▼▼ ¡AQUÍ ESTÁ LA LÍNEA CLAVE! ▼▼▼
-            # Hacemos que la celda no sea editable.
             price_item.setFlags(price_item.flags() & ~Qt.ItemIsEditable)
-            
             table.setItem(row, 2, price_item)
-            
+
             delete_btn_container = QWidget()
             delete_btn_layout = QHBoxLayout(delete_btn_container)
             delete_btn_layout.setContentsMargins(0,0,0,0); delete_btn_layout.setAlignment(Qt.AlignCenter)
