@@ -1,6 +1,25 @@
-/* styles.qss - HorizonFlows POS Design */
+/*
+ * ===================================================================
+ * styles.qss - Hoja de Estilos para HorizonFlows POS
+ * ===================================================================
+ * Estructura:
+ * 1. ESTILOS GLOBALES Y DE VENTANA PRINCIPAL
+ * 2. BARRA DE HERRAMIENTAS SUPERIOR (TOOLBAR)
+ * 3. COMPONENTES GENERALES (Botones, Inputs, ComboBox, etc.)
+ * 4. PANEL IZQUIERDO (Búsqueda y Tabla de Órdenes)
+ * 5. PANEL DERECHO (Resumen de Orden)
+ * 6. FOOTER (Barra de Estado Inferior)
+ * ===================================================================
+*/
 
-/* --- General Window & Font Settings --- */
+
+/*
+ * -------------------------------------------------------------------
+ * 1. ESTILOS GLOBALES Y DE VENTANA PRINCIPAL
+ * -------------------------------------------------------------------
+*/
+
+/* Estilo base para toda la aplicación */
 QWidget {
     background-color: #f8f9fa; 
     color: #343a40; 
@@ -8,71 +27,20 @@ QWidget {
     font-size: 14px;
 }
 
+/* Fondo de la ventana principal */
 QMainWindow {
     background-color: #ffffff;
 }
 
-/* --- Top Toolbar --- */
-QToolBar {
-    background-color: #ffffff;
-    border-bottom: 1px solid #dee2e6;
-    padding: 5px;
-    spacing: 10px;
-}
-QToolBar::handle {
-    image: none;
-}
-QToolBar QToolButton {
-    color: #495057;
-    font-weight: 600;
-    padding: 8px 12px;
-    border-radius: 6px;
-    background-color: transparent;
-    border: none;
-}
-QToolBar QToolButton:hover {
-    background-color: #f1f3f5;
-}
-QToolBar QToolButton:checked {
-    color: #212529;
-    background-color: #e9ecef;
-}
-
-/* --- Left Panel --- */
-
-#search_container {
-    background-color: #ffffff;
-    border: 1px solid #dee2e6;
-    border-radius: 8px;
-}
-#search_input {
-    border: none;
-    background-color: transparent;
-    font-size: 15px;
-}
-#search_input:focus {
-    border: none;
-}
-
-#options_button {
-    background-color: #ffffff;
-    border: 1px solid #dee2e6;
-    border-radius: 8px;
-    font-weight: 500;
-    padding: 10px 20px;
-}
-#options_button:hover {
-    background-color: #f8f9fa;
-    border-color: #ced4da;
-}
-
+/* Contenedor genérico con bordes */
 QGroupBox {
     background-color: #ffffff;
     border: 1px solid #dee2e6;
     border-radius: 8px;
-    margin-top: 15px;
-    padding: 20px;
+    margin-top: 15px; /* Espacio para el título */
 }
+
+/* Título de los QGroupBox */
 QGroupBox::title {
     subcontrol-origin: margin;
     subcontrol-position: top left;
@@ -83,99 +51,243 @@ QGroupBox::title {
     font-size: 16px;
 }
 
-/* Order Items Table */
+
+/*
+ * -------------------------------------------------------------------
+ * 2. BARRA DE HERRAMIENTAS SUPERIOR (TOOLBAR)
+ * -------------------------------------------------------------------
+*/
+
+QToolBar {
+    background-color: #ffffff;
+    border-bottom: 1px solid #dee2e6;
+    padding: 5px;
+    spacing: 10px;
+}
+
+QToolBar::handle {
+    image: none; /* Oculta el handle para mover la toolbar */
+}
+
+QToolBar QToolButton {
+    color: #495057;
+    font-weight: 600;
+    padding: 8px 12px;
+    border-radius: 6px;
+    background-color: transparent;
+    border: none;
+}
+
+QToolBar QToolButton:hover {
+    background-color: #f1f3f5;
+}
+
+QToolBar QToolButton:checked {
+    color: #212529;
+    background-color: #e9ecef;
+}
+
+
+/*
+ * -------------------------------------------------------------------
+ * 3. COMPONENTES GENERALES (Inputs, ComboBox, etc.)
+ * -------------------------------------------------------------------
+*/
+
+/* Campos de texto generales */
+QLineEdit {
+    background-color: #ffffff;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 15px;
+}
+
+QLineEdit:focus {
+    border: 1px solid #86b7fe; /* Resaltado azul al enfocar */
+}
+
+/* Menús desplegables */
+QComboBox {
+    background-color: #ffffff;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 0 15px;
+    height: 48px; /* Altura fija para consistencia */
+}
+
+QComboBox:focus, QComboBox:on {
+    border-color: #86b7fe;
+}
+
+QComboBox::drop-down {
+    border: none;
+    width: 25px;
+}
+
+QComboBox::down-arrow {
+    image: url(app/assets/icons/chevron-down.svg);
+}
+
+
+/*
+ * -------------------------------------------------------------------
+ * 4. PANEL IZQUIERDO (Búsqueda y Tabla de Órdenes)
+ * -------------------------------------------------------------------
+*/
+
+/* Contenedor de la barra de búsqueda */
+#search_container {
+    background-color: #ffffff;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+}
+
+/* Input de la barra de búsqueda (sin borde propio) */
+#search_input {
+    border: none;
+    background-color: transparent;
+    font-size: 15px;
+}
+
+#search_input:focus {
+    border: none;
+}
+
+/* Botón de opciones al lado de la búsqueda */
+#options_button {
+    background-color: #ffffff;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    font-weight: 500;
+    padding: 10px 20px;
+    height: 48px;
+}
+
+#options_button:hover {
+    background-color: #f8f9fa;
+    border-color: #ced4da;
+}
+
+/* Tabla de artículos en la orden */
 QTableWidget {
     background-color: #ffffff;
     border: none;
     gridline-color: transparent;
 }
+
+/* Celdas de la tabla */
 QTableWidget::item {
     border-bottom: 1px solid #f1f3f5;
     padding: 5px;
 }
+
 QTableWidget::item:selected {
-    background-color: #ffffff;
+    background-color: #ffffff; /* Evita el resaltado azul por defecto */
     color: #212529;
 }
+
+/* Etiquetas dentro de la tabla */
 #product_name_label {
     font-size: 15px;
     font-weight: 500;
 }
+
 #sku_label {
     color: #6c757d;
     font-size: 13px;
 }
+
+/* Estilo para items de texto en la tabla (ej. precios) */
 QTableWidget QTableWidgetItem { 
     font-size: 16px;
     font-weight: 600;
     padding-right: 15px;
 }
 
-/* ▼▼▼ ESTILO PARA EL INPUT DE CANTIDAD SIN PADDING ▼▼▼ */
+/* Input de cantidad en la tabla */
 #quantity_input {
     border: 1px solid #dee2e6;
     background-color: #ffffff;
     border-radius: 6px;
     font-size: 15px;
     font-weight: 500;
-    padding: 0px 5px; /* Quita el padding vertical y deja un poco en horizontal */
+    padding: 0px 5px; /* Padding solo horizontal */
 }
+
 #quantity_input:focus {
     border: 1px solid #86b7fe;
 }
 
+/* Botón de borrar en cada fila de la tabla */
 #delete_button {
     border: none;
     background-color: transparent;
     border-radius: 16px;
 }
+
 #delete_button:hover {
-    background-color: #fceeee;
+    background-color: #fceeee; /* Tono rojo claro al pasar el mouse */
 }
 
-#bottom_action_button {
-    background-color: #f1f3f5;
-    border: 1px solid #e9ecef;
+/* Botones oscuros (Limpiar Todo, Suspender) */
+QPushButton#dark_button {
+    background-color: #495057;
+    color: #ffffff;
+    border: none;
+    padding: 12px 20px;
     border-radius: 8px;
     font-weight: 500;
-    padding: 12px;
     font-size: 15px;
-    text-align: center;
-}
-#bottom_action_button:hover {
-    background-color: #e9ecef;
-    border-color: #dee2e6;
 }
 
-/* --- Right Panel --- */
+QPushButton#dark_button:hover {
+    background-color: #343a40;
+}
 
-QComboBox {
-    background-color: #ffffff;
-    border: 1px solid #dee2e6;
-    border-radius: 8px;
-    padding: 0 15px;
+
+/*
+ * -------------------------------------------------------------------
+ * 5. PANEL DERECHO (Resumen de Orden)
+ * -------------------------------------------------------------------
+*/
+
+/* Título del panel de resumen */
+QGroupBox#main_summary_panel::title {
+    font-size: 18px;
 }
-QComboBox:focus, QComboBox:on {
-    border-color: #86b7fe;
+
+/* Etiquetas generales dentro del panel de resumen */
+QGroupBox#main_summary_panel QLabel {
+    font-size: 14px;
+    font-weight: 500;
 }
-QComboBox::drop-down {
+
+/* Subtítulos (Cliente, Método de Pago, etc.) */
+QLabel#summary_subtitle {
+    font-weight: 600;
+    color: #495057;
+    font-size: 14px;
+    background-color: transparent;
+}
+
+/* Texto grande para "X unidades" */
+#order_summary_total_units {
+    font-size: 28px;
+    font-weight: 700;
+    color: #212529;
+}
+
+/* Texto grande para el "Cambio a devolver" */
+#change_value_label {
+    color: #212529;
+    font-size: 26px;
+    font-weight: 700;
+    background-color: transparent;
     border: none;
-    width: 25px;
-}
-QComboBox::down-arrow {
-    image: url(app/icons/chevron-down.svg);
 }
 
-#summary_label { color: #495057; font-size: 15px; }
-#summary_value { font-weight: 500; font-size: 15px; }
-#total_label { font-size: 18px; font-weight: 600; }
-#total_value { font-size: 18px; font-weight: 600; }
-#summary_line {
-    background-color: #f1f3f5;
-    border: none;
-    height: 1px;
-}
-
+/* Botones de método de pago (Efectivo, Tarjeta) */
 #payment_method_button {
     text-align: center;
     padding: 15px;
@@ -185,26 +297,18 @@ QComboBox::down-arrow {
     border: 1px solid #dee2e6;
     border-radius: 8px;
 }
+
 #payment_method_button:hover {
     background-color: #e9ecef;
 }
+
 #payment_method_button:checked {
     background-color: #ffffff;
     border: 2px solid #212529;
     color: #212529;
 }
 
-QLineEdit {
-    background-color: #ffffff;
-    border: 1px solid #dee2e6;
-    border-radius: 8px;
-    padding: 12px;
-    font-size: 15px;
-}
-QLineEdit:focus {
-    border: 1px solid #86b7fe;
-}
-
+/* Botón principal de acción (Procesar Pago) */
 #process_payment_button {
     background-color: #212529;
     color: #ffffff;
@@ -213,44 +317,151 @@ QLineEdit:focus {
     border: none;
     border-radius: 8px;
 }
+
 #process_payment_button:hover {
     background-color: #343a40;
 }
 
-#final_action_button {
-    background-color: transparent;
-    border: none;
-    color: #495057;
-    font-weight: 500;
-    padding: 8px;
+
+/*
+ * -------------------------------------------------------------------
+ * 6. FOOTER (Barra de Estado Inferior)
+ * -------------------------------------------------------------------
+*/
+
+QWidget#footer {
+    background-color: #343a40;
+    border-top: 1px solid #495057;
+    width: 100%;
+    min-height: 30px;
+    padding: 5px 0px;
 }
-#final_action_button:hover {
+
+QLabel#footer_label {
+    font-size: 12px;
+    font-weight: 500;
+    background-color: transparent;
+    color: #ffffff;
+}
+
+
+/* =======================
+   Resumen de Orden (derecha)
+   ======================= */
+
+QGroupBox#main_summary_panel {
+    background: #ffffff;
+    border: 1px solid #dee2e6;
+    border-radius: 10px;
+}
+
+QGroupBox#main_summary_panel::title {
+    color: #212529;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 8px 0 0 0;
+    margin-left: 10px;
+}
+
+/* Cajita superior con total de productos */
+#total_products_box {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 10px;
+}
+
+#summary_subtitle {
+    color: #6c757d;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+#summary_big {
+    font-size: 22px;
+    font-weight: 800;
+    color: #212529;
+    margin-top: 2px;
+}
+
+/* Filas Subtotal/IVA/Descuento */
+#summary_row_label {
+    color: #6c757d;
+    background-color: transparent;
+    font-size: 14px;
+}
+
+#summary_row_value {
+    color: #212529;
+    font-size: 14px;
+}
+
+#summary_total_label {
+    background-color: transparent;
+    color: #212529;
+    font-weight: 700;
+    font-size: 17px;
+}
+
+#summary_total_value {
+    color: #212529;
+    font-weight: 800;
+    font-size: 20px;
+}
+
+/* Combobox cliente */
+QComboBox#client_combo {
+    min-height: 40px;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 6px 10px;
+}
+
+/* Toggle método de pago */
+QPushButton#pay_method_btn {
+    background: #f1f3f5;
+    border: 1px solid #dee2e6;
+    color: #212529;
+    border-radius: 10px;
+    padding: 10px 16px;
+    font-weight: 600;
+}
+
+QPushButton#pay_method_btn:checked {
+    border-color: #d9dbdd;
+    background-color: #ffffff;
     color: #212529;
 }
 
-/* Estilo para los botones oscuros */
-QPushButton#dark_button {
-    background-color: #333;
-    color: #fff;
+QPushButton#pay_method_btn:hover {
+    background: #e9ecef;
+}
+
+/* Input recibido y cambio */
+#money_input {
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 6px 10px;
+    font-size: 15px;
+}
+
+#money_input:focus {
+    border: 1px solid #86b7fe;
+}
+
+#change_value {
+    font-size: 18px;
+    font-weight: 800;
+    color: #212529;
+}
+
+/* Botón primario */
+QPushButton#primary_button {
+    background: #212529;
     border: none;
-    padding: 8px 15px;
-    border-radius: 5px;
+    color: #ffffff;
+    border-radius: 10px;
+    font-weight: 700;
 }
 
-
-QPushButton#dark_button:hover {
-    background-color: #555;
-}
-
-
-/* Estilo para el footer */
-QWidget#footer {
-    background-color: #f0f0f0;
-    border-top: 1px solid #ccc;
-}
-
-
-QLabel#footer_label {
-    font-size: 11px;
-    color: #555;
-}
+QPushButton#primary_button:hover { background: #343a40; }
+QPushButton#primary_button:pressed { background: #212529; }

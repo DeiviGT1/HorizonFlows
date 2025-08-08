@@ -1,5 +1,5 @@
 # app/views/main_window.py
-from PySide6.QtWidgets import QMainWindow, QToolBar, QWidget, QSizePolicy
+from PySide6.QtWidgets import QMainWindow, QToolBar, QWidget, QSizePolicy, QStatusBar, QLabel, QHBoxLayout
 from PySide6.QtGui import QAction, QIcon
 from PySide6.QtCore import QSize, Qt
 
@@ -41,3 +41,25 @@ class MainWindow(QMainWindow):
         # La vista del terminal ahora se carga desde la subcarpeta 'pages'
         terminal_widget = TerminalView()
         self.setCentralWidget(terminal_widget)
+
+        status = QStatusBar(self)
+        wrapper = QWidget()
+        wrapper.setObjectName("footer")
+        lay = QHBoxLayout(wrapper)
+        lay.setContentsMargins(16, 6, 16, 6)
+
+        left  = QLabel("Estado: ● Conectado")
+        center = QLabel("Última sincronización: 08/01/2025 14:32")
+        right = QLabel("Caja: Terminal #1")
+
+        for w in (left, center, right):
+            w.setObjectName("footer_label")
+
+        lay.addWidget(left)
+        lay.addStretch()
+        lay.addWidget(center)
+        lay.addStretch()
+        lay.addWidget(right)
+
+        status.addPermanentWidget(wrapper, 1)
+        self.setStatusBar(status)
