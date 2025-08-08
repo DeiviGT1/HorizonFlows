@@ -4,7 +4,6 @@ from typing import List, Optional
 from sqlmodel import Field, SQLModel, Relationship
 from datetime import date, datetime
 from enum import Enum
-from .user import Shift
 
 class CashActivityType(str, Enum):
     IN = "in"
@@ -32,4 +31,5 @@ class CashDrawerActivity(SQLModel, table=True):
     reason: str
     
     shift_id: int = Field(foreign_key="shift.id")
+    # Referencia hacia adelante para evitar importación circular
     shift: "Shift" = Relationship(back_populates="cash_activities")

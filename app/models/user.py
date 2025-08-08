@@ -29,10 +29,7 @@ class Shift(SQLModel, table=True):
     ending_cash: Optional[float] = None
     
     user_id: int = Field(foreign_key="user.id")
-    user: User = Relationship(back_populates="shifts")
+    user: "User" = Relationship(back_populates="shifts")
     
+    # Referencia hacia adelante para evitar importación circular
     cash_activities: List["CashDrawerActivity"] = Relationship(back_populates="shift")
-
-class CashDrawerActivity(SQLModel, table=True):
-    # Definido en finance.py para evitar importaciones circulares
-    pass
