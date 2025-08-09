@@ -139,3 +139,7 @@ QWidget#inventory_page QCheckBox#inv_row_checkbox {
 #inv_row_icon_button {
     background-color: transparent;
 }
+
+QLabel#change_value {
+    background-color: transparent;
+}

@@ -2,7 +2,7 @@
 from PySide6.QtWidgets import (
     QWidget, QHBoxLayout, QVBoxLayout, QLineEdit, QPushButton, QTableWidget,
     QTableWidgetItem, QHeaderView, QLabel, QFormLayout, QComboBox, QGroupBox,
-    QFrame, QButtonGroup, QAbstractItemView
+    QFrame, QButtonGroup, QAbstractItemView, QSizePolicy
 )
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QIcon, QPixmap, QFont
@@ -181,10 +181,11 @@ class TerminalView(QWidget):
         card_btn.setIcon(self._get_icon("credit-card.svg"))
         other_btn = QPushButton("Otro")
         other_btn.setIcon(self._get_icon("credit-card.svg"))
-        for b in (cash_btn, card_btn):
+        for b in (cash_btn, card_btn, other_btn):
             b.setCheckable(True)
             b.setObjectName("pay_method_btn")
             b.setMinimumHeight(44)
+            b.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
         pay_group = QButtonGroup(self)
         pay_group.setExclusive(True)
         pay_group.addButton(cash_btn)
@@ -200,7 +201,7 @@ class TerminalView(QWidget):
         # --- Recibido / Cambio ---
         recv_caption = QLabel("Recibido")
         recv_caption.setObjectName("summary_subtitle")
-        recv_input = QLineEdit("100.00")  # ejemplo
+        recv_input = QLineEdit("100.00")
         recv_input.setObjectName("money_input")
         recv_input.setFixedHeight(40)
 

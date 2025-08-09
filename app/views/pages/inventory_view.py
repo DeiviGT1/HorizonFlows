@@ -125,24 +125,29 @@ class InventoryView(QWidget):
         self.table.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.table.setSelectionMode(QAbstractItemView.NoSelection)
         self.table.setAlternatingRowColors(False)
-        self.table.verticalHeader().setVisible(False)
+        self.table.verticalHeader().setVisible(False)     # acciones
 
         hdr = self.table.horizontalHeader()
         hdr.setStretchLastSection(False)
         hdr.setDefaultAlignment(Qt.AlignLeft | Qt.AlignVCenter)
-        hdr.setSectionResizeMode(0, QHeaderView.Fixed)          # checkbox
-        hdr.setSectionResizeMode(1, QHeaderView.Fixed)          # imagen
-        hdr.setSectionResizeMode(2, QHeaderView.Stretch)        # nombre
-        hdr.setSectionResizeMode(3, QHeaderView.ResizeToContents)
-        hdr.setSectionResizeMode(4, QHeaderView.ResizeToContents)
-        hdr.setSectionResizeMode(5, QHeaderView.ResizeToContents)
-        hdr.setSectionResizeMode(6, QHeaderView.ResizeToContents)
-        hdr.setSectionResizeMode(7, QHeaderView.Fixed)          # acciones
 
-        # ANCHOS QUE MATCHEAN EL MOCKUP
-        self.table.setColumnWidth(0, 40)    # checkbox
-        self.table.setColumnWidth(1, 72)    # imagen + padding
-        self.table.setColumnWidth(7, 92)    # acciones (2 íconos)
+        # 0: checkbox, 1: imagen -> fijos
+        hdr.setSectionResizeMode(0, QHeaderView.Fixed)
+        hdr.setSectionResizeMode(1, QHeaderView.Fixed)
+        self.table.setColumnWidth(0, 40)
+        self.table.setColumnWidth(1, 72)
+
+        # 2: NAME -> se estira, ocupa el espacio sobrante
+        self._min_name_width = 180
+        self.table.resizeEvent = self._table_resize_event_wrapper(self.table.resizeEvent)
+        hdr.setSectionResizeMode(2, QHeaderView.Stretch)
+
+        # 3..6: SKU, Categoría, Stock, Precio -> se ajustan a su contenido
+        for col in (3, 4, 5, 6):
+            hdr.setSectionResizeMode(col, QHeaderView.ResizeToContents)
+
+        # 7: Acciones -> a contenido (dos botones)
+        hdr.setSectionResizeMode(7, QHeaderView.ResizeToContents)
 
         tbl_layout.addWidget(self.table)
         root.addWidget(table_box, 1)
@@ -170,7 +175,6 @@ class InventoryView(QWidget):
         # Data de ejemplo
         self._populate_sample()
 
-    # ---- Helpers ----
     def _labeled_combo(self, label_text: str, items: list[str]) -> QWidget:
         box = QWidget()
         lay = QVBoxLayout(box)
@@ -304,3 +308,16 @@ class InventoryView(QWidget):
 
             # Altura de fila como en el mockup
             self.table.setRowHeight(r, 64)
+
+    def _table_resize_event_wrapper(self, original_resize_event):
+        def _wrapped(event):
+            # ejecuta el resize original
+            original_resize_event(event)
+            # aplica min width a la columna Name (2)
+            hdr = self.table.horizontalHeader()
+            name_col = 2
+            if hdr.sectionSize(name_col) < self._min_name_width:
+                # Intento de asegurar mínimo: damos ese tamaño a Name.
+                # Qt redistribuye el resto sobre columnas Stretch/ResizeToContents.
+                hdr.resizeSection(name_col, self._min_name_width)
+        return _wrapped
