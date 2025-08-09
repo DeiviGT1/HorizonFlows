@@ -7,28 +7,33 @@ QWidget#inventory_page #inv_title {
   font-weight: 700;
 }
 
-/* Filtros */
+/* Panel de filtros */
 QGroupBox#inventory_filters_box {
   border-radius: 10px;
   border: 1px solid #e9ecef;
   background: #ffffff;
 }
+
+/* Buscador */
 QWidget#inventory_page #inv_search_container {
   border: 1px solid #dee2e6;
   border-radius: 10px;
-  background: #fff;
-  min-height: 44px;
+  background: #ffffff;
 }
 QWidget#inventory_page #inv_search_input {
   border: none;
   background: transparent;
   font-size: 15px;
 }
+
+/* Labels de campo (Categoría/Estado) */
 QWidget#inventory_page #inv_field_label {
   color: #6c757d;
   font-size: 12px;
   font-weight: 600;
 }
+
+/* Botones debajo del panel */
 QPushButton#inv_secondary_button {
   background: #ffffff;
   border: 1px solid #dee2e6;
@@ -38,30 +43,44 @@ QPushButton#inv_secondary_button {
 }
 QPushButton#inv_secondary_button:hover { background: #f8f9fa; }
 
-/* Botón principal header */
+/* Botón “+ Añadir Producto” */
 QPushButton#inv_primary_button {
-  background: #212529;
+  background: #0b1324;
   color: #fff;
   border: none;
   border-radius: 10px;
   font-weight: 700;
   padding: 8px 14px;
 }
-QPushButton#inv_primary_button:hover { background: #343a40; }
+QPushButton#inv_primary_button:hover { background: #1a2235; }
 
-/* Tabla */
-QGroupBox#inventory_table_box { border: 1px solid #e9ecef; border-radius: 10px; background: #fff; }
+/* Caja de tabla */
+QGroupBox#inventory_table_box {
+  border: 1px solid #e9ecef;
+  border-radius: 10px;
+  background: #ffffff;
+}
+
+/* Contador superior (derecha) */
 QLabel#inv_count_label { color: #6c757d; }
 
+/* Tabla */
 QTableWidget#inventory_table::item { border-bottom: 1px solid #f1f3f5; }
 
 QLabel#inv_img_placeholder {
   background: #e9ecef;
   color: #6c757d;
   font-weight: 700;
-  border-radius: 6px;
+  border-radius: 8px;
+  font-size: 12px;
 }
 
+QLabel#inv_name_cell {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* Stock badge */
 QLabel#inv_stock_badge {
   background: #f1f3f5;
   color: #212529;
@@ -72,6 +91,7 @@ QLabel#inv_stock_badge {
   font-size: 12px;
 }
 
+/* Icon buttons acciones */
 QPushButton#inv_row_icon_button {
   border: none;
   background: transparent;
