@@ -179,6 +179,8 @@ class TerminalView(QWidget):
         cash_btn.setIcon(self._get_icon("dollar-sign.svg"))
         card_btn = QPushButton("Tarjeta")
         card_btn.setIcon(self._get_icon("credit-card.svg"))
+        other_btn = QPushButton("Otro")
+        other_btn.setIcon(self._get_icon("credit-card.svg"))
         for b in (cash_btn, card_btn):
             b.setCheckable(True)
             b.setObjectName("pay_method_btn")
@@ -187,10 +189,12 @@ class TerminalView(QWidget):
         pay_group.setExclusive(True)
         pay_group.addButton(cash_btn)
         pay_group.addButton(card_btn)
+        pay_group.addButton(other_btn)
         cash_btn.setChecked(True)
 
         pay_row.addWidget(cash_btn)
         pay_row.addWidget(card_btn)
+        pay_row.addWidget(other_btn)
         main_layout.addLayout(pay_row)
 
         # --- Recibido / Cambio ---
