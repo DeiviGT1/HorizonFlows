@@ -1,0 +1,98 @@
+/* Root */
+QWidget#inventory_page { }
+
+/* Header */
+QWidget#inventory_page #inv_title {
+  font-size: 22px;
+  font-weight: 700;
+}
+
+/* Filtros */
+QGroupBox#inventory_filters_box {
+  border-radius: 10px;
+  border: 1px solid #e9ecef;
+  background: #ffffff;
+}
+QWidget#inventory_page #inv_search_container {
+  border: 1px solid #dee2e6;
+  border-radius: 10px;
+  background: #fff;
+  min-height: 44px;
+}
+QWidget#inventory_page #inv_search_input {
+  border: none;
+  background: transparent;
+  font-size: 15px;
+}
+QWidget#inventory_page #inv_field_label {
+  color: #6c757d;
+  font-size: 12px;
+  font-weight: 600;
+}
+QPushButton#inv_secondary_button {
+  background: #ffffff;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-weight: 600;
+}
+QPushButton#inv_secondary_button:hover { background: #f8f9fa; }
+
+/* Botón principal header */
+QPushButton#inv_primary_button {
+  background: #212529;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-weight: 700;
+  padding: 8px 14px;
+}
+QPushButton#inv_primary_button:hover { background: #343a40; }
+
+/* Tabla */
+QGroupBox#inventory_table_box { border: 1px solid #e9ecef; border-radius: 10px; background: #fff; }
+QLabel#inv_count_label { color: #6c757d; }
+
+QTableWidget#inventory_table::item { border-bottom: 1px solid #f1f3f5; }
+
+QLabel#inv_img_placeholder {
+  background: #e9ecef;
+  color: #6c757d;
+  font-weight: 700;
+  border-radius: 6px;
+}
+
+QLabel#inv_stock_badge {
+  background: #f1f3f5;
+  color: #212529;
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+  padding: 3px 8px;
+  font-weight: 600;
+  font-size: 12px;
+}
+
+QPushButton#inv_row_icon_button {
+  border: none;
+  background: transparent;
+  border-radius: 6px;
+}
+QPushButton#inv_row_icon_button:hover { background: #f1f3f5; }
+
+/* Paginación */
+QLabel#inv_results_hint { color: #6c757d; }
+
+QPushButton#page_button,
+QPushButton#page_button_current {
+  background: #ffffff;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 4px 8px;
+  font-weight: 600;
+}
+QPushButton#page_button:hover { background: #f8f9fa; }
+QPushButton#page_button_current {
+  background: #0b1324;
+  color: #ffffff;
+  border-color: #0b1324;
+}
