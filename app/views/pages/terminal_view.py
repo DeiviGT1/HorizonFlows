@@ -74,6 +74,7 @@ class TerminalView(QWidget):
         order_layout = QVBoxLayout(order_box)
         
         self.order_items_table = QTableWidget()
+        self.order_items_table.setObjectName("order_items_table")
         self.order_items_table.setColumnCount(5)
         self.order_items_table.setHorizontalHeaderLabels(["Producto", "Cant.", "P. Unitario", "P. Total", ""])
         
@@ -231,6 +232,7 @@ class TerminalView(QWidget):
 
         for row, item in enumerate(sample_items):
             product_widget = QWidget()
+            product_widget.setObjectName("order_cell_container")
             product_layout = QVBoxLayout(product_widget); product_layout.setContentsMargins(10, 8, 10, 8); product_layout.setSpacing(2)
             product_name_label = QLabel(item["name"]); product_name_label.setObjectName("product_name_label")
             sku_label = QLabel(f"SKU: {item['sku']}"); sku_label.setObjectName("sku_label")
@@ -238,7 +240,12 @@ class TerminalView(QWidget):
             table.setCellWidget(row, 0, product_widget)
 
             qty_input = QLineEdit(str(item['qty'])); qty_input.setObjectName("quantity_input"); qty_input.setAlignment(Qt.AlignCenter); qty_input.setFixedSize(50, 32)
-            qty_container = QWidget(); qty_layout = QHBoxLayout(qty_container); qty_layout.setContentsMargins(0,0,0,0); qty_layout.setAlignment(Qt.AlignCenter); qty_layout.addWidget(qty_input)
+            qty_container = QWidget()
+            qty_container.setObjectName("order_cell_container")
+            qty_layout = QHBoxLayout(qty_container)
+            qty_layout.setContentsMargins(0,0,0,0)
+            qty_layout.setAlignment(Qt.AlignCenter)
+            qty_layout.addWidget(qty_input)
             table.setCellWidget(row, 1, qty_container)
 
             unit_price_item = QTableWidgetItem(f"${item['price']:.2f}"); unit_price_item.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter); unit_price_item.setFlags(unit_price_item.flags() & ~Qt.ItemIsEditable)
@@ -249,7 +256,11 @@ class TerminalView(QWidget):
             font = total_price_item.font(); font.setBold(True); total_price_item.setFont(font); total_price_item.setFlags(total_price_item.flags() & ~Qt.ItemIsEditable)
             table.setItem(row, 3, total_price_item)
             
-            delete_btn_container = QWidget(); delete_btn_layout = QHBoxLayout(delete_btn_container); delete_btn_layout.setContentsMargins(0,0,0,0); delete_btn_layout.setAlignment(Qt.AlignCenter)
+            delete_btn_container = QWidget()
+            delete_btn_container.setObjectName("order_cell_container")
+            delete_btn_layout = QHBoxLayout(delete_btn_container)
+            delete_btn_layout.setContentsMargins(0,0,0,0)
+            delete_btn_layout.setAlignment(Qt.AlignCenter)
             delete_btn = QPushButton(); delete_btn.setIcon(self._get_icon("trash-2.svg")); delete_btn.setObjectName("delete_button"); delete_btn.setFixedSize(32, 32)
             delete_btn_layout.addWidget(delete_btn)
             table.setCellWidget(row, 4, delete_btn_container)

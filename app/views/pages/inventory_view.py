@@ -1,7 +1,7 @@
 from PySide6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton, QLineEdit, QComboBox,
     QGroupBox, QTableWidget, QTableWidgetItem, QHeaderView, QAbstractItemView,
-    QCheckBox
+    QCheckBox, QSizePolicy
 )
 from PySide6.QtCore import Qt, QSize
 from PySide6.QtGui import QIcon, QPixmap
@@ -43,7 +43,16 @@ class InventoryView(QWidget):
         controls = QHBoxLayout()
         controls.setSpacing(12)
 
-        # Buscador
+        # --- Buscador ---
+        search_box = QWidget()
+        search_lay = QVBoxLayout(search_box)
+        search_lay.setContentsMargins(0, 0, 0, 0)
+        search_lay.setSpacing(6)
+
+        search_label = QLabel("Nombre o Código")
+        search_label.setObjectName("inv_field_label")  # mismo estilo que los demás
+        search_lay.addWidget(search_label)
+
         search_wrap = QWidget()
         search_wrap.setObjectName("inv_search_container")
         search_wrap.setFixedHeight(48)
@@ -60,6 +69,9 @@ class InventoryView(QWidget):
         swl.addWidget(search_icon)
         swl.addWidget(self.search_input)
 
+        search_lay.addWidget(search_wrap)
+
+
         # Categoría
         cat_box = self._labeled_combo("Categoría", ["Todas las categorías", "Electrónicos", "Ropa", "Hogar", "Deportes"])
         self.category_combo = cat_box.findChild(QComboBox)
@@ -68,7 +80,7 @@ class InventoryView(QWidget):
         stock_box = self._labeled_combo("Estado de Stock", ["Todos los estados", "Con stock", "Bajo", "Sin stock"])
         self.stock_combo = stock_box.findChild(QComboBox)
 
-        controls.addWidget(search_wrap, 2)
+        controls.addWidget(search_box, 2)
         controls.addWidget(cat_box, 1)
         controls.addWidget(stock_box, 1)
         filters_col.addLayout(controls)
@@ -128,7 +140,7 @@ class InventoryView(QWidget):
         hdr.setSectionResizeMode(7, QHeaderView.Fixed)          # acciones
 
         # ANCHOS QUE MATCHEAN EL MOCKUP
-        self.table.setColumnWidth(0, 26)    # checkbox
+        self.table.setColumnWidth(0, 40)    # checkbox
         self.table.setColumnWidth(1, 72)    # imagen + padding
         self.table.setColumnWidth(7, 92)    # acciones (2 íconos)
 
@@ -197,12 +209,27 @@ class InventoryView(QWidget):
         ]
         self.table.setRowCount(len(sample))
         for r, (name, sku, cat, stock, price) in enumerate(sample):
-            # Col 0: checkbox
+            # Col 0: checkbox (perfectly centered)
             cb = QCheckBox()
+            cb.setText("")  # avoid extra width from label spacing
             cb.setTristate(False)
             cb.setObjectName("inv_row_checkbox")
-            cb.setStyleSheet("margin-left:6px;")  # pequeño ajuste visual
-            self.table.setCellWidget(r, 0, cb)
+            cb.setStyleSheet("margin:0px; padding:0px;")
+
+            cb_container = QWidget()
+            cb_container.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+            cb_container.setStyleSheet("background: transparent;")
+            cb_container.setAttribute(Qt.WA_TranslucentBackground)
+
+            cb_layout = QHBoxLayout(cb_container)
+            cb_layout.setContentsMargins(0, 0, 0, 0)
+
+            # Center using per-widget alignment + stretches (most reliable across platforms)
+            cb_layout.addStretch()
+            cb_layout.addWidget(cb, 0, Qt.AlignCenter)
+            cb_layout.addStretch()
+
+            self.table.setCellWidget(r, 0, cb_container)
 
             # Col 1: imagen 40x28 centrada, con fondo pill
             img_wrap = QWidget()
@@ -236,6 +263,7 @@ class InventoryView(QWidget):
             stock_lbl = QLabel(f"{stock} unidades")
             stock_lbl.setObjectName("inv_stock_badge")
             stock_wrap = QWidget()
+            stock_wrap.setObjectName("inv_stock_wrap")  # <-- nuevo objectName
             swl = QHBoxLayout(stock_wrap)
             swl.setContentsMargins(0, 0, 0, 0)
             swl.setAlignment(Qt.AlignCenter)
@@ -250,6 +278,7 @@ class InventoryView(QWidget):
 
             # Col 7: acciones
             act_wrap = QWidget()
+            act_wrap.setObjectName("inv_actions_wrap")  # <-- nuevo objectName
             al = QHBoxLayout(act_wrap)
             al.setContentsMargins(0, 0, 0, 0)
             al.setSpacing(6)

@@ -162,3 +162,23 @@ QWidget#terminal_page #change_value {
 }
 
 /* Botón primario (reutiliza #primary_button global) */
+/* Tabla de la orden: fondo transparente en todo */
+QTableWidget#order_items_table {
+    background: transparent;
+}
+
+/* Ítems basados en QTableWidgetItem (P. Unitario / P. Total) */
+QTableWidget#order_items_table::item {
+    background: transparent;
+    selection-background-color: transparent; /* evita gris al seleccionar */
+}
+
+/* Contenedores de celdas que usan QWidget (Producto, Cant., Eliminar) */
+QTableWidget#order_items_table QWidget#order_cell_container {
+    background: transparent;
+}
+
+/* Labels dentro de la celda de Producto (por si el tema les da fondo) */
+QTableWidget#order_items_table QLabel {
+    background: transparent;
+}
